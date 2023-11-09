@@ -1,0 +1,93 @@
+\documentclass{jsarticle}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[dvipdfmx]{color}
+\usepackage{here}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{url}
+\usepackage[hang,small,bf]{caption}
+\usepackage[subrefformat=parens]{subcaption}
+\usepackage{tikz}
+\usepackage{siunitx}
+\usepackage{bm}
+\usepackage{ascmac}
+\usepackage[top=15truemm,bottom=20truemm,left=20truemm,right=20truemm]{geometry}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary {shapes.misc}
+\usetikzlibrary{positioning}
+\captionsetup{compatibility=false}
+
+\begin{document}
+4/5
+
+% 1.9 : ホップフィールドネットワークの増幅器の典型的な入出力特性。
+\section*{1.2.5 人工ニューラルネットワーク}
+    生物学的構造を模した、人工ニューラルネットワークは、
+    分散情報処理と並列計算の利点がある。
+    図1.8は、ニューラルネットワークの1つのモデルである
+    ホップフィールドモデル[Hopfield model]を実現する
+    電気回路を示したもの。
+    この回路は、増幅器(アンプ)を接続したRCネットワークに基づいている。
+    アンプの入出力特性は、$v_i = g_i(u_i)$で与えられ、
+    $u_i$と$v_i$は第$i$アンプの入力電圧と出力電圧である。
+    関数$g_i(\cdot) \colon R \rightarrow (-V_M,V_M)$は、
+    図1.9に示すように，漸近線が$-V_M$と$V_M$であるシグモイド関数である。
+    この関数は連続微分可能で、奇関数で、単調増加し、$u_i = 0$かつその時に限り$g_i(u_i) = 0$である。\\
+    $g_i(\cdot)$の例
+    \begin{equation*}
+        g_i(u_i) = \frac{2V_M}{\pi} \tan^{-1}\left(\frac{\lambda \pi u_i}{2V_M}\right)\;,\;\lambda>0
+    \end{equation*}
+    \begin{equation*}
+        g_i(u_i) = V_M\frac{e^{\lambda u_i}-e^{-\lambda u_i}}{e^{\lambda u_i}+e^{-\lambda u_i}} = V_M \tanh (\lambda u_i)\;,\;\lambda>0
+    \end{equation*}
+    ここで、$\lambda$は$u_i = 0$のときの$g_i (u_i)$の傾きである。
+    このようなシグモイド入出力特性は，オペアンプを用いて実現することができる。
+    各アンプには，出力が$-v_i$の反転アンプがあり，
+    入力線に接続されるアンプ出力の符号を選択することが可能である。
+    出力$v_i$と$-v_i$は、通常、同じオペアンプ回路の2つの出力端子から供給される。
+    この一対の非線形増幅器は "ニューロン"と呼ばれる。
+    この回路は、各アンプの入力にRC回路部分を含んでいる。
+    容量$C_i> 0$と抵抗$\rho_i > 0$は、
+    i番目のアンプ入力におけるシャント容量とシャント抵抗
+    \footnote{回路に流れる全電流を測定するため、電流計に並列入れる抵抗器のこと}
+    の合計を表している。
+    第$i$アンプの入力ノードでキルヒホッフの電流則を書くと、
+    \begin{equation*}
+        C_i\frac{du_i}{dt} = \sum_j \frac{1}{R_{ij}}(\pm v_j - u_i)-\frac{1}{\rho_i}u_i+I_i 
+        = \sum_j T_{ij}v_j-\frac{1}{R_i}u_i+I_i  
+    \end{equation*}
+    が得られます、
+    ここで、$1/R_i = 1/\rho_i + \sum_j 1/R_{ij}$、$T_{ij}$は符号付きコンダクタンスで、
+    その大きさは$1/R_{ij}$であり、
+    その符号はj番目のアンプの正または負の出力の選択によって決定される。
+    $I_i$は一定の入力電流である。
+    $n$個のアンプを持つ回路では、運動は$n$個の1階微分方程式で記述される。
+    この回路の状態モデルを書くために、状態変数を$x_i = v_i\;,\;i=1,2,\dots$とする。
+    \begin{equation*}
+        \dot x_i = \frac{dg_i}{du_i}(u_i) \times \dot u_i 
+        = \frac{dg_i}{du_i}(u_i) \times \frac{1}{C_i}\left(\sum_j T_{ij}x_j-\frac{1}{R}u_i+I_i\right)  
+    \end{equation*}
+    \begin{equation*}
+        \left.h_i(x_i)=\frac{dg_i}{du_i}(u_i)\right|_{u_i=g_i^{-1}(x_i)}
+    \end{equation*}
+    を定義することにより、状態方程式を$i=1,2,\dots$に対して 
+    \begin{equation*}
+        \dot x_i = \frac{1}{C_i}h_i(x_i)\left[\sum_j T_{ij}x_j-\frac{1}{R}g_i^{-1}(x_i)+I_i\right]   
+    \end{equation*}
+    と書くことができる。
+    なお、$g_i(\cdot)$のシグモイド特性により、
+    関数$h(\cdot)$は$h_i(x_i)>0\;,\;\forall x_i \in (-V_M,V_M)$を満たす。
+    システムの平衡点は、$n$個の連立方程式
+    \begin{equation*}
+        0=\sum_j T_{ij}x_j-\frac{1}{R}g_i^{-1}(x_i)+I_i \;,\;1\leq i\leq n
+    \end{equation*}
+    の根で、シグモイド特性、線形抵抗接続、入力電流で決まる。
+    $i=1,2,\dots$について、状態変数を$u_i$とすることで、等価状態モデルを得ることができる。
+    
+    このニューラルネットワークの安定性解析は、
+    シンメトリー条件$T_{ij} = T_{ji}$が満たされるかどうかに決定的に依存する。
+    $T_{ij} = T_{ji}$の場合の解析例は4.2節に、$T_{ij} \neq T_{ji}$の場合の解析例は9.5節に示す。
+
+\end{document}

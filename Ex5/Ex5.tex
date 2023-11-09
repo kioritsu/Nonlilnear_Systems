@@ -1,0 +1,116 @@
+\documentclass{jsarticle}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[dvipdfmx]{color}
+\usepackage{here}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{url}
+\usepackage[hang,small,bf]{caption}
+\usepackage[subrefformat=parens]{subcaption}
+\usepackage{tikz}
+\usepackage{siunitx}
+\usepackage{bm}
+\usepackage{ascmac}
+\usepackage{tasks}
+\usepackage[top=15truemm,bottom=20truemm,left=20truemm,right=20truemm]{geometry}
+% \usepackage{fancybx}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary {shapes.misc}
+\usetikzlibrary{positioning}
+\captionsetup{compatibility=false}
+
+
+\begin{document}
+
+\section*{5.5}
+図5.2に示す各リレー特性について、$\mathcal L_\infty$と$\mathcal L_2$の安定性を調べよ。
+\vspace{5mm}
+
+図(a),(b),(d)について、
+\begin{align}
+  |y| \leq k|u|\;,\;\forall u
+\end{align}
+を満たす正の定数$k$が存在する(図参照)。
+そのため、有限ゲイン$\mathcal L_\infty$安定である。
+また、
+\begin{align}
+  |y|^2 \leq k^2 |u|^2\;,\;\forall u 
+\end{align}
+を満たす正の定数$k$が存在するため、有限ゲイン$\mathcal L_2$安定である。
+
+図(c)について、出力が有界であるため、
+\begin{align}
+  |y| \leq k|u|+\beta \;,\;\forall u
+\end{align}
+を満たす正の定数$k,\beta$が存在する(図参照)。
+そのため、有限ゲイン$\mathcal L_\infty$安定である。
+しかし、入力$u(t) = e^{-t}$に対する出力$y(t) = a\;,\;a>0$を考えると、
+$\|y\|_{\mathcal L_2}$は有限ではないのに対し、$\|u\|_{\mathcal L_2}$は有限となるため、
+$\mathcal L_2$安定でない。
+
+\newpage
+
+\section*{5.21}
+図5.1に示すフィードバック接続を考える。
+$(u_1,u_2)$から$(y_1,y_2)$への写像が有限ゲイン$\mathcal L$安定であるとき、かつその時に限り、
+$(u_1,u_2)$から$(e_1,e_2)$への写像が有限ゲイン$\mathcal L$安定であることを示せ。
+\vspace{5mm}
+
+$(u_1,u_2)$から$(y_1,y_2)$への写像が有限ゲイン$\mathcal L$安定であるとき、
+\begin{align}
+  \|y_{1\tau}\|_\mathcal L \leq \gamma_{y11} \|u_{1\tau}\|_\mathcal L + \gamma_{y12} \|u_{2\tau}\|_\mathcal L + \beta_{y1} \;,\;\forall u_1,u_2 , \tau\in [0,\infty)\\
+  \|y_{2\tau}\|_\mathcal L \leq \gamma_{y21} \|u_{1\tau}\|_\mathcal L + \gamma_{y22} \|u_{2\tau}\|_\mathcal L + \beta_{y2} \;,\;\forall u_1,u_2 , \tau\in [0,\infty)
+\end{align}
+が成り立つ。ここで、
+\begin{align*}
+  e_1 &= u_1-y_2\\
+  |e_1| &\leq |u_1|+|y_2|
+\end{align*}
+であるため、
+\begin{align*}
+  \|e_{1\tau}\|_\mathcal L &\leq \|u_{1\tau}\|_\mathcal L + \|y_{2\tau}\|_\mathcal L \\
+  & \leq  (1 + \gamma_{y21}) \|u_{1\tau}\|_\mathcal L + \gamma_{y22} \|u_{2\tau}\|_\mathcal L + \beta_{y2} \;,\;\forall u_1,u_2 , \tau\in [0,\infty)
+\end{align*}
+また、
+\begin{align*}
+  e_2 &= u_2+y_1\\
+  |e_2| &\leq |u_2|+|y_1|
+\end{align*}
+であるため、
+\begin{align*}
+  \|e_{2\tau}\|_\mathcal L &\leq \|u_{2\tau}\|_\mathcal L + \|y_{1\tau}\|_\mathcal L \\
+  & \leq  \gamma_{y21} \|u_{1\tau}\|_\mathcal L + (1+ \gamma_{y22} )\|u_{2\tau}\|_\mathcal L + \beta_{y2} \;,\;\forall u_1,u_2 , \tau\in [0,\infty)
+\end{align*}
+よって、$(u_1,u_2)$から$(e_1,e_2)$への写像が有限ゲイン$\mathcal L$安定である。
+
+$(u_1,u_2)$から$(e_1,e_2)$への写像が有限ゲイン$\mathcal L$安定であるとき、
+\begin{align}
+  \|e_{1\tau}\|_\mathcal L \leq \gamma_{e11} \|u_{1\tau}\|_\mathcal L + \gamma_{e12} \|u_{2\tau}\|_\mathcal L + \beta_{e1} \;,\;\forall u_1,u_2 , \tau\in [0,\infty)\\
+  \|e_{2\tau}\|_\mathcal L \leq \gamma_{e21} \|u_{1\tau}\|_\mathcal L + \gamma_{e22} \|u_{2\tau}\|_\mathcal L + \beta_{e2} \;,\;\forall u_1,u_2 , \tau\in [0,\infty)
+\end{align}
+が成り立つ。ここで、
+\begin{align*}
+  y_1 &= e_2-u_2\\
+  |y_1| &\leq |e_2|+|u_2|
+\end{align*}
+であるため、
+\begin{align*}
+  \|y_{1\tau}\|_\mathcal L &\leq  \|e_{2\tau}\|_\mathcal L +  \|u_{2\tau}\|_\mathcal L \\
+  & \leq \gamma_{e21} \|u_{1\tau}\|_\mathcal L + (1+\gamma_{e22}) \|u_{2\tau}\|_\mathcal L + \beta_{e2} \;,\;\forall u_1,u_2 , \tau\in [0,\infty)
+\end{align*}
+また、
+\begin{align*}
+  y_2 &= u_1-e_1\\
+  |y_2| & \leq  |u_1| + |e_1|
+\end{align*}
+であるため、
+\begin{align*}
+  \|y_{2\tau}\|_\mathcal L &\leq  \|u_{1\tau}\|_\mathcal L +  \|e_{1\tau}\|_\mathcal L \\
+  & leq (1+\gamma_{e11}) \|u_{1\tau}\|_\mathcal L + \gamma_{e12} \|u_{2\tau}\|_\mathcal L + \beta_{e1} \;,\;\forall u_1,u_2 , \tau\in [0,\infty)
+\end{align*}
+よって、$(u_1,u_2)$から$(y_1,y_2)$への写像が有限ゲイン$\mathcal L$安定である。
+
+
+\end{document}

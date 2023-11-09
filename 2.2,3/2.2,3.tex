@@ -1,0 +1,264 @@
+\documentclass{jsarticle}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[dvipdfmx]{color}
+\usepackage{here}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{url}
+\usepackage[hang,small,bf]{caption}
+\usepackage[subrefformat=parens]{subcaption}
+\usepackage{tikz}
+\usepackage{siunitx}
+\usepackage{bm}
+\usepackage{ascmac}
+\usepackage[top=15truemm,bottom=20truemm,left=20truemm,right=20truemm]{geometry}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary {shapes.misc}
+\usetikzlibrary{positioning}
+\captionsetup{compatibility=false}
+
+\begin{document}
+4/12
+
+% 1.9 : ホップフィールドネットワークの増幅器の典型的な入出力特性。
+\section*{2.2 複数の平衡状態}
+
+線形システム$\dot x =Ax$の平衡点 
+\begin{enumerate}
+  \item $\det A \neq 0$のとき、$x=0$に孤立した平衡点
+  \item $\det A = 0$のとき、連続した平衡点、を持つ。
+\end{enumerate}
+
+非線形システムの平衡点
+
+Example2.1(1.2.2節のトンネルダイオード回路)
+
+状態モデル
+\begin{align*}
+  \dot x_1 =& 0.5[-h(x_1)+x_2]\\
+  \dot x_2 =& 0.2(-x_1-1.5x_2+1.2)\\
+  h(x_1) =& 17.76x_1-103.79x_1^2+229.62x_1^3-226.31x_1^4+83.72x_1^5
+\end{align*}
+これを平衡点$\dot x_1=\dot x_2=0$として解くと、3つの平衡点$Q_1$(0.063,0.758)、$Q_2$(0.285,0.61)、$Q_3$(0.884,0.21)が見つかる。
+
+図2.13：例2.1のトンネル・ダイオード回路の位相ポートレート
+\begin{itemize}
+  \item $Q_2$はサドルと呼ばれ、周囲の解軌道には平衡点に向かって近づいていく方向と離れていく方向のどちらもが存在する点
+  \item $Q_1,Q_3$は安定ノードと呼ばれ、周囲の解軌道には平衡点に向かって近づいていく点
+  \item $Q_2$に近づく2つの特殊な軌道はセパラトリックスと呼ばれ、平面を2分割している。
+  \item 実験では、初期コンデンサ電圧とインダクタ電流に応じて、安定ノード$Q_1$と$Q_3$のどちらかに収束する。
+  ノイズの影響があるため、実験で$Q_2$に収束することはない。
+\end{itemize}
+
+図2.14 : トリガー時のトンネル・ダイオード回路の負荷線の調整。
+\begin{itemize}
+  \item 複数の平衡状態を持つトンネルダイオード回路は、2つの定常動作点を持つことから双安定回路と呼ばれる。
+  \item 平衡点$Q_1$から$Q_3$へ変化させたい時は、
+  負荷線を図2.14の破線より高くするのに十分な振幅と，軌道がセパラトリックスの右側に到達するのに十分な長さの
+  正のパルスを電源電圧uに加える必要がある。
+\end{itemize}
+
+図2.15：トンネルダイオード回路のヒステリシス特性
+
+入力$u=E$、出力$y=v_R$のシステムとして考える。
+
+非常に小さな入力$u$からスタートし、徐々に入力を大きくしたとき。
+\begin{itemize}
+  \item 入力を点Ａより大きくしないとき\\
+  $Q_1$(EA上)が唯一の平衡点となる。
+  \item 入力を点Ａより大きく,点B・Cより小さくしたとき\\
+  平衡点は$Q_1$(AB上)、$Q_2$(BD上)、$Q_3$(DC上)が存在、
+  $u$を徐々に増加させるので、初期状態は$Q_1$付近のため、出力は$Q_1$(AB上)になる。
+  \item 入力を点B・Cより大きくしたとき\\
+  $Q_3$(CF上)が唯一の平衡点となる。出力はBからCへジャンプする。
+\end{itemize}
+大きな入力$u$からスタートし、徐々に入力を小さくしたとき。
+\begin{itemize}
+  \item 入力を点B・Cより大きくしたとき\\
+  $Q_3$(CF上)が唯一の平衡点となる。
+  \item 入力を点Ａより大きく,点B・Cより小さくしたとき\\
+  平衡点は$Q_1$(AB上)、$Q_2$(BD上)、$Q_3$(DC上)が存在、
+  $u$を徐々に増加させるので、初期状態は$Q_3$付近のため、出力は$Q_3$(CD上)になる。
+  \item 入力を点Ａより大きくしないとき\\
+  $Q_1$(EA上)が唯一の平衡点となる。出力はDからAへジャンプする。
+\end{itemize}
+このシステムでは、入力の変化に対して出力が異なることがある。
+
+Example2.2(摩擦のある振り子)
+
+\begin{align*}
+  \dot x_1 = & x_2\\
+  \dot x_2 = & -10\sin x_1 - x_2
+\end{align*}
+平衡点は($n\pi$,0)である。
+また、($2m\pi$,0)は振り子の重りが真下にある時で、
+($\{2m+1\}\pi$,0)は振り子の重りが真上にある時である。ここで、$n,m$は整数。
+
+図2.16：振り子方程式の位相ポートレート
+\begin{itemize}
+  \item 平衡点($\{2m+1\}\pi$,0)はサドルである。
+  \item サドル点($-\pi$,0)と($\pi$,0)に収束する軌道の内部の軌道は全て、
+  (0,0)に近づく。これが周期的に繰り返される。
+  \item 異なる平衡点への収束は、収束までの振り子の回転数の違いを示す。
+  \item ノイズの影響があるため、振り子の重りが真上にある時を維持することはない。
+\end{itemize}
+
+\newpage
+
+\section*{2.3 平衡点付近の定性的挙動}
+2.2節では、位相ポートレートにより、平衡点付近の挙動を確認した。
+この節では、図を書くことなく平衡点付近の挙動を確認する例を紹介する。
+
+平衡点に関する線形化により、非線形システムの平衡点付近のふるまいを考える。
+
+以下の非線形システムの平衡点を$p=(p_1,p_2)$とする。
+関数$f_1,f_2$が連続微分可能であるとする。
+\begin{align*}
+  \dot x_1 = & f_1(x_1,x_2)\\
+  \dot x_2 = & f_2(x_1,x_2)
+\end{align*}
+右辺を$p=(p_1,p_2)$についてテイラー展開
+\begin{align*}
+  \dot x_1 =& f_1(p_1,p_2) + a_{11}(x_1-p_1) + a_{12}(x_2-p_2) + H.O.T.\\
+  \dot x_2 =& f_2(p_1,p_2) + a_{21}(x_1-p_1) + a_{22}(x_2-p_2) + H.O.T.\\
+\end{align*}
+ここで、
+\begin{align*}
+  a_{11} = \left.\frac{\partial f_1(x_1,x_2)}{\partial x_1}\right|_{x_1=p_1,x_2=p_2}\;,&\;
+  a_{12} = \left.\frac{\partial f_1(x_1,x_2)}{\partial x_2}\right|_{x_1=p_1,x_2=p_2}\\
+  a_{21} = \left.\frac{\partial f_2(x_1,x_2)}{\partial x_1}\right|_{x_1=p_1,x_2=p_2}\;,&\;
+  a_{22} = \left.\frac{\partial f_2(x_1,x_2)}{\partial x_2}\right|_{x_1=p_1,x_2=p_2}\\
+\end{align*}
+$H.O.T.$は高次項を示す。
+
+$p=(p_1,p_2)$は平衡点であるため、
+\begin{equation*}
+  f_1(p_1,p_2)=f_2(p_1,p_2)=0
+\end{equation*}
+平衡点近くのふるまいを知りたいため、
+\begin{equation*}
+  y_1 = x_1-p_1\;,\;y_2 = x_2-p_2
+\end{equation*}
+と定義し、高次の項が無視できるような平衡点の十分小さい近傍に注目すると、
+線形状態方程式に近似可能
+\begin{align*}
+  \dot y_1 = & \dot x_1 = a_{11}y_1 + a_{12}y_2\\
+  \dot y_2 = & \dot x_2 = a_{21}y_1 + a_{22}y_2\\
+\end{align*}
+さらに、書き換え
+\begin{equation*}
+  \dot y = Ay
+\end{equation*}
+\begin{equation*}
+  A = \left[
+    \begin{matrix}
+      a_{11} & a_{12}\\
+      a_{21} & a_{22}\\
+    \end{matrix}
+  \right]=
+  \left.\left[
+    \begin{matrix}
+      \frac{\partial f_1}{\partial x_1} & \frac{\partial f_1}{\partial x_2}\\
+      \frac{\partial f_2}{\partial x_1} & \frac{\partial f_2}{\partial x_2}\\     
+    \end{matrix}
+  \right]\right|_{x=p}
+  = \left.\frac{\partial f}{\partial x}\right|_{x=p}
+\end{equation*}
+非線形状態方程式の平衡点を、
+その平衡点に関する線形化状態方程式が同じ挙動をする場合、
+安定(不安定)ノード、安定(不安定)フォーカス、
+またはサドル点と呼ぶことにする。
+
+Example 2.3：(例2.1のトンネルダイオード回路)
+
+トンネル・ダイオード回路の関数 $f ( x )$ のヤコビアン行列は、
+\begin{equation*}
+  \frac{\partial f}{\partial x} = \left[
+    \begin{matrix}
+      -0.5h'(x_1)& 0.5\\
+      -0.2 & -0.3
+    \end{matrix}
+  \right]
+\end{equation*}
+であり、平衡点$Q_1,Q_2,Q_3$について行列$A$はそれぞれ、
+\begin{align*}
+  A_1 = \left[
+    \begin{matrix}
+      -3.598&0.5\\
+      -0.2&-0.3
+    \end{matrix}
+  \right]\;,&\;\; \text{固有値}\;-3.57,-0.33\\
+  A_2 = \left[
+    \begin{matrix}
+      1.82&0.5\\
+      -0.2&-0.3
+    \end{matrix}
+  \right]\;,&\;\; \text{固有値}\;1.77,-0.25\\
+  A_3 = \left[
+    \begin{matrix}
+      -1.427&0.5\\
+      -0.2&-0.3
+    \end{matrix}
+  \right]\;,&\;\; \text{固有値}\;-1.33,-0.4\\
+\end{align*}
+であるため、$Q_1,Q_3$が安定ノードであり、$Q_2$がサドルであることが
+線形化状態方程式からも分かった。
+
+Example2.4:(例2.2の摩擦のある振り子)
+例2.2の摩擦のある振り子の関数 $f ( x )$ のヤコビアン行列は、
+\begin{equation*}
+  \frac{\partial f}{\partial x} = \left[
+    \begin{matrix}
+      0& 1\\
+      -10\cos x_1 & -1
+    \end{matrix}
+  \right]
+\end{equation*}
+であり、平衡点(0,0),($\pi$,0)について行列$A$はそれぞれ、
+\begin{align*}
+  A_1 = \left[
+    \begin{matrix}
+      0&1\\
+      -10&-1
+    \end{matrix}
+  \right]\;,&\;\; \text{固有値}\;-0.5\pm j3.12\\
+  A_2 = \left[
+    \begin{matrix}
+      0&1\\
+      10&-1
+    \end{matrix}
+  \right]\;,&\;\; \text{固有値}\;-3.7,2.7\\
+\end{align*}
+であるため、(0,0)が安定ノードであり、($\pi$,0)がサドル点であることが
+線形化状態方程式からも分かった。
+線形化状態方程式の固有値が虚軸上にない場合に線形化特性が成り立つことに注意。
+
+Example2.5
+
+線形化状態方程式の固有値が虚軸上にある、
+つまり、平衡点がセンター、渦心点である場合の例を考える。
+
+以下の非線形システムの原点は平衡点である。
+\begin{align*}
+  \dot x_1 =& -x_2-\mu x_1 (x_1^2 + x_2^2)\\
+  \dot x_2 =& x_1-\mu x_2(x_1^2 + x_2^2)
+\end{align*}
+この原点における線形化状態方程式の固有値は$\pm j$である。
+
+極座標を用いて非線形システムのふるまいを考える。
+\begin{align*}
+  x_1 = r\cos \theta \;,&\; x_2 = r\sin\theta\\
+  \dot r = -\mu r^3 \;,&\;\dot \theta = 1\\
+\end{align*}
+非線形システムの軌道は、$\mu>0$のときは安定焦点、
+$\mu < 0$のときは不安定焦点に似た軌道をとることがわかる。
+この例より、線形化状態方程式で平衡点がセンターである場合、
+非線形状態方程式ではふるまいが保存されないことがわかる。
+
+線形化状態方程式が複数の固有値を持つ場合は例外であることに注意。
+
+
+
+\end{document}

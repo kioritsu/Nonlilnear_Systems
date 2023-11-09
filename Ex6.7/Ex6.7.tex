@@ -1,0 +1,96 @@
+\documentclass{jsarticle}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[dvipdfmx]{color}
+\usepackage{here}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{url}
+\usepackage[hang,small,bf]{caption}
+\usepackage[subrefformat=parens]{subcaption}
+\usepackage{tikz}
+\usepackage{siunitx}
+\usepackage{bm}
+\usepackage{ascmac}
+\usepackage{tasks}
+\usepackage[top=15truemm,bottom=20truemm,left=20truemm,right=20truemm]{geometry}
+% \usepackage{fancybx}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary {shapes.misc}
+\usetikzlibrary{positioning}
+\captionsetup{compatibility=false}
+
+
+\begin{document}
+
+\settasks{counter-format=(\arabic*)} %「=」の後ろで箇条書きの記号を変更
+
+\section*{Ex6.7}
+伝達関数$(b_0s + b_1)/(s^2 + a_1s + a_2)$が厳密に誠実であるとき、かつその時に限り、\\
+すべての係数が正であり、かつ$b_1 <a_1b_0$であることを示せ。
+
+\vspace{1cm}
+伝達関数$G(s) = (b_0s + b_1)/(s^2 + a_1s + a_2)$が厳密に誠実であること、つまり
+\begin{itemize}
+  \item $G(s)$の極の実部が負である
+  \item $Re[G(jw)]>0$であること
+  \item $G(\infty) = 0 \;\text{and}\;\lim_{w\rightarrow \infty}w^2Re[G(jw)]>0$
+\end{itemize}
+の条件について考える。
+
+$G(s)$の極は$\frac{-a_1 \pm\sqrt{a_1^2-4a_2}}{2}$となるため、
+$G(s)$の極の実部が負であるとき、かつその時に限り、$a_1,a_2 > 0$である。
+\begin{align*}
+  Re[G(jw)] = Re\left[\frac{b_0jw + b_1}{-w^2 + a_1jw + a_2}\right]=\frac{b_1a_2 + (b_0a_1 - b_1)w^2}{(a_2-w^2)^2+a_1^2w^2}
+\end{align*}
+ここで、先ほどの条件より、$a_1,a_2 > 0$であるとする。\\
+$Re[G(jw)]>0$であるとき、かつその時に限り、$b_1>0\;,\;b_0a_1 \geq b_1$である。
+$G(\infty) = 0$であるため、
+\begin{align*}
+  \lim_{w\rightarrow \infty}w^2Re[G(jw)]= b_0a_1-b_1 
+\end{align*}
+よって、$\lim_{w\rightarrow \infty}w^2Re[G(jw)]>0$であるとき、かつその時に限り、$b_0a_1 > b_1$である。
+
+そのため、
+伝達関数$(b_0s + b_1)/(s^2 + a_1s + a_2)$が厳密に誠実であるとき、かつその時に限り、\\
+すべての係数が正であり、かつ$b_1 <a_1b_0$である。
+
+
+
+
+\newpage
+
+\section*{Ex6.19}
+(6.21)(6.22) の形式の 2つの時不変動的システムのフィードバック接続を考える。 
+\begin{align*}
+  \dot x_i = f_i(x_i,e_i) \tag{6.21}\\
+  y_i = h_i(x_i,e_i) \tag{6.22}
+\end{align*}
+両方のフィードバック成分がゼロ状態可観測であり、以下を満たす正定値蓄積関数が存在すると仮定する。
+\begin{align*}
+  e^\top_i y_i \geq \dot V_i + e_i^\top \varphi_i(e_i)+y_i^\top \rho_i(y_i) \;,\;\text{for}\;i=1,2
+\end{align*}
+$u = 0$ の閉ループ システム (6.24) は、
+\begin{align*}
+  v^\top [\rho_1(v) + \varphi_2(v)]>0 \;\text{and}\; v^\top [\rho_2(v)-\varphi_1(-v)]>0\;,\;\forall v \neq 0
+\end{align*}
+の場合、原点が漸近安定であることを示せ。
+
+また、どのような条件を追加すれば、原点が大域的漸近安定になるか？
+\vspace{1cm}
+$u=0$のとき、$e_1 = -y_2\;,\;e_2 = y_1$である。\\
+閉ループ系のリアプノフ候補関数$V = V_1 + V_2$とする。
+$V_1,V_2$が正定値関数であるため、$V$も正定値関数である。
+\begin{align*}
+  \dot V &\leq e^\top_1 y_1-e_1^\top \varphi_1(e_1)-y_1^\top \rho_1(y_1)+e^\top_2 y_2-e_2^\top \varphi_2(e_2)-y_2^\top \rho_2(y_2)\\
+  & = -y_1^\top \{\varphi_2(y_1)+\rho(y_1)\} + y_2^\top \{\rho_2(y_2)-\varphi_1(-y_2)\} \leq 0
+\end{align*}
+$\dot V = 0\Rightarrow y_1^\top \{\varphi_2(y_1)+\rho(y_1)\}=0 \text{and} y_2^\top \{\rho_2(y_2)-\varphi_1(-y_2)\} =0 \Rightarrow y_1 =0 \text{and} y_2=0$
+
+ここで、
+$y_1=0 \Rightarrow x_1=0$,$y_2 = 0\Rightarrow x_2 = 0$となるため、原点が漸近安定である。
+
+また、原点が大域的漸近安定にとなるには、蓄積関数$V_1,V_2$が放射状非有界である必要がある。
+
+\end{document}

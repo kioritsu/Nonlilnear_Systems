@@ -1,0 +1,331 @@
+\documentclass{jsarticle}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[dvipdfmx]{color}
+\usepackage{here}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{url}
+\usepackage[hang,small,bf]{caption}
+\usepackage[subrefformat=parens]{subcaption}
+\usepackage{tikz}
+\usepackage{siunitx}
+\usepackage{bm}
+\usepackage{ascmac}
+\usepackage[top=15truemm,bottom=20truemm,left=20truemm,right=20truemm]{geometry}
+% \usepackage{fancybx}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary {shapes.misc}
+\usetikzlibrary{positioning}
+\captionsetup{compatibility=false}
+
+
+\begin{document}
+4/17
+
+\section*{Chapter3 基本的な性質}
+本章では、微分方程式の解の基本的な性質、
+存在性、一意性、初期状態への連続的な依存性、パラメーターへの連続的な依存性
+について述べる。
+これらの性質により状態方程式が物理系の数学的モデルとして有用であることが分かる。
+
+\section*{3.1 存在と一意性}
+初期値問題(3.1)が一意解を持つための十分条件を導出。
+\begin{equation}
+  \dot x = f(t,x)\;,\;x(t_0) = x_0 \tag{3.1}
+\end{equation}
+区間$[t_0,t_1]$での(3.1)の解とは、
+$\dot x(t) = f(t,x(t))\;,\;\forall t\in [t_0,t_1]$となるような
+連続関数$x:[t_0,t_1]\rightarrow R^n$のこと。
+\begin{itemize}
+  \item $f(t,x)$が$t$と$x$について連続ならば、解$x(t)$は連続微分可能である。
+  \item $f(t,x)$が$x$について連続かつ、
+$t$について区分的に連続であるならば、
+解$x(t)$は区分的に連続微分可能である。
+  \begin{itemize}
+    \item $f(t,x)$が時間と共に変化する入力に依存する場合を含むことができる。
+  \end{itemize}
+\end{itemize}
+
+微分方程式に初期条件が与えられたとき、
+解を複数持つことがある。
+
+\begin{equation}
+  \dot x = x^{1/3}\;,\;x(0)=0 \tag{3.3}
+\end{equation}
+この方程式の解は$x(t)=(2t/3)^{3/2}$と$x(t)=0$が存在するため、
+解が一意に定まらない。
+$f(t,x)$の連続性は少なくとも１つの解が存在することを保証。
+
+\begin{itembox}[l]{Theorem 3.1 局所的存在と一意性}
+  $f(t,x)$が$t$について区分的に連続であり、
+  以下のリプシッツ条件を満たすとする。
+  \begin{equation*}
+    \|f(t,x)-f(t,y)\| \leq L\|x-y\| \;,\; 
+    \forall x,y \in B = \{x\in R^n \mid \|x-x_0\| \leq r\}
+  \end{equation*}
+  この時、状態方程式$\dot x = f(t,x)\;,\;x(t_0)=x_0$が
+  $[t_0,t_0+\delta]$について一意解をもつような$\delta>0$が存在する。
+\end{itembox}   
+任意の時間間隔$[t_0,t_1]$での解の存在と一意性を保証できない。
+しかし、局所的な定理を繰り返し適用することによって、区間を広げることを試みるこ
+とができる。
+
+% リプシッツ条件
+
+% 初期値問題(3.1)で、
+% $(t_0,x_0)$の近傍内の全ての点$(t,x),(t,y)$で以下が成り立つとき、
+% 関数$f(t,x)$は$x$についてリプシッツである。
+% $L$をリプシッツ定数と呼ぶ。
+
+1変数関数$f(x)$のリプシッツ条件
+
+\begin{itemize}
+  \item 領域(開・連結集合)$D$内の各点$x$とその近傍$D_0$を考える。
+この近傍$D_0$のすべての点において、$f$がリプシッツ条件を満たす
+あるリプシッツ定数$L_0$を持つとき、$D$上で
+局所リプシッツ(locally Lipschitz)であるという。
+
+\item 領域(開・連結集合)$W$内のすべての点において、
+$f$がリプシッツ条件を同じリプシッツ定数
+$L$で満たすとき、$W$上で
+リプシッツ(Lipschitz)であるという。
+
+\item $f(x)$が$R^n$上でリプシッツであるとき、
+大域的リプシッツ(globally Lipschitz)であるという。
+
+\item[$\star$] $f(x)$が領域$D$上で局所リプシッツであるとき、
+必ずしも領域$D$上でリプシッツであるわけではない。
+領域$D$内のすべての点に対してリプシッツ条件が同じ定数$L$で成立しないことがあるため。
+ただし、領域$D$上で局所リプシッツであるとき、$D$
+のすべてのコンパクト部分集合上でリプシッツとなる(演習3.19)
+\end{itemize}
+
+2変数関数$f(t,x)$に拡張するには
+与えられた時間区間内のすべての$t$に対して、
+$f$が$t$について一様にリプシッツ条件を満たす必要がある。
+
+\begin{itembox}[l]{Lemma 3.1}
+  $f:[a,b]\times D\rightarrow R^m$
+  がある領域$D \subset R^n$
+  について連続である。
+  $[\partial f/\partial x]$が存在し、
+  $D \subset R^n$
+  について連続である。
+  凸集合$W\subset D$について
+  以下を満たすような定数$L$が存在する、
+  \begin{equation*}
+    \|\frac{\partial f}{\partial x}(t,x)\|\leq L \;,\; \text{on} 
+    [a,b]\times W 
+  \end{equation*}
+  以上の仮定のもとで、以下が成り立つ。
+  \begin{equation*}
+    \|f(t,x)-f(t,y)\| \leq L\|x-y\| \;,\; 
+    \forall t\in [a,b]\;,\; x,y\in W 
+  \end{equation*}
+  
+\end{itembox}
+$[\partial f/\partial x]$を用いてリプシッツ定数を計算可能であることを意味する。
+
+\begin{itembox}[l]{Lemma 3.2}
+  $f(t,x)$と$[\partial f/\partial x](t,x)$が
+  ある領域$D\subset R^n$で、$[a,b]\times D$について連続であるとき、
+  $f$は$[a,b]\times D$上で$x$について局所リプシッツである。
+\end{itembox}
+\begin{itembox}[l]{Lemma 3.3}
+  $f(t,x)$と$[\partial f/\partial x](t,x)$が
+  $[a,b]\times R^n$について連続であるとき、
+  $[\partial f/\partial x](t,x)$が$[a,b]\times R^n$に有界である
+  、かつその時に限り、
+  $f$は$[a,b]\times R^n$上で$x$について大域的リプシッツであり、
+
+\end{itembox}
+
+Example 3.1\\
+以下の関数は$R^2$上で連続微分可能である。
+\begin{equation*}
+  f(x) = \left[
+    \begin{matrix}
+      -x_1+x_1x_2\\
+      x_2-x_1x_2
+    \end{matrix}
+  \right]
+\end{equation*}
+従って、$R^2$上で局所的リプシッツである。
+$R^2$上で一様有界でないので、大域的リプシッツではない。
+$R^2$のコンパクト部分集合上で、$f$はリプシッツである。
+
+凸集合$W = \{x\in R^2\mid |x_1|\leq a_1,|x_2|\leq a_2\}$
+上のリプシッツ定数を求めたい。
+ヤコビアン行列を求める。
+\begin{equation*}
+  [\frac{\partial f}{\partial x}] = \left[
+    \begin{matrix}
+      -1+x_2&x_1\\
+      -x_2&1-x_1
+    \end{matrix}
+  \right]
+\end{equation*}
+$R^2$のベクトルに対して$\|\cdot\|_\infty$を、
+行列に対して誘導行列ノルムを用いると、
+\begin{equation*}
+  \|\frac{\partial f}{\partial x}\|_\infty = 
+  \max\{|-1+x_2|+|x_1|, |x_2|+|1-x_1|\}
+\end{equation*}
+$W$の全ての点は以下を満たす。
+\begin{equation*}
+  |-1+x_2|+|x_1| \leq 1+a_2+a_1 \;,\;
+  |x_2|+|1-x_1| \leq a_2+1+a_1
+\end{equation*}
+\begin{equation*}
+  \|\frac{\partial f}{\partial x}\|_\infty\leq 1+a_1+a_2
+\end{equation*}
+よって、リプシッツ定数は$L=1+a_1+a_2$
+
+Example 3.2\\
+以下の関数は$R^2$上で連続微分可能ではない。
+\begin{equation*}
+  f(x) = \left[
+    \begin{matrix}
+      x_2 \\ -\text{sat} (x_1+x_2)
+    \end{matrix}
+  \right]
+\end{equation*}
+$R^2$のベクトルに対して$\|\cdot\|_2$を用いる。以下が成り立つ。
+\begin{equation*}
+  |\text{sat}(\eta)-\text{sat}(\xi) |\leq |\eta - \xi|
+\end{equation*}
+この時、以下が得られる。
+\begin{equation*}
+  \|f(x)-f(y) \|_2^2 \leq (x_1-y_1)^2 + 2(x_1-y_1)(x_2-y_2)+2(x_2-y_2)^2
+\end{equation*}
+つまり、
+\begin{equation*}
+  \|f(x)-f(y) \|_2\leq \sqrt{2.618}\|x-y\|_2\;,\;\forall x,y \in R^2
+\end{equation*}
+また、より保守的な不等式より、
+\begin{equation*}
+  a^2+2ab+2b^2 \leq 3(a^2+b^2)
+\end{equation*}
+よって、$L=\sqrt{3}$というより大きなリプシッツ定数が得られることもある。
+
+Example 3.3
+\begin{equation*}
+  \dot x = -x^2\;,\;x(0)= -1
+\end{equation*}
+関数$f(x)=-x^2$は全ての$x\in R$上で、局所リプシッツである。
+そのため、$R$の任意のコンパクト部分集合上でリプシッツである。
+$[0,1)$上で一意解$x(t)=1/(t-1)$が存在する。
+$t\rightarrow 1$で$x(t)$は任意のコンパクト集合から離れる。
+軌跡が 有限の時間で無限大に脱出する現象を 「有限の脱出時間(finite escape time)」という言葉で表
+現することがある。例3.3は、軌跡が$t = 1$で有限の脱出時間を持つ例。
+
+解が無限に拡張されることが保証されるのはどのような場合か？\\
+解$x(t)$が常に、$f(t, x)$が$x$において一様にリプシッ
+ツである集合に入ることを保証する追加条件を求めることである。
+これは次の定理において、$f$がグローバル・リプシッツ条件を満たすことを
+求めることで行われる。この定理は、$[t_0,t_1]$上の
+ユニークな解が存在することを証明するもので、$t_1$は任意に大きくてもよい。
+
+\begin{itembox}[l]{Theorem3.2 大域的存在と一意性}
+  $f(t,x)$が$t$について区分的に連続であり、以下を満たすと仮定。
+  \begin{equation*}
+    \|f(t,x)-f(t,y)\| \leq L\|x-y\|\;,\;\forall x,y \in R^n,t\in [t_0,t_1]
+  \end{equation*}
+  このとき、状態方程式$\dot x=f(t,x)\;,\;x(t_0)=x_0$は
+  $[t_0,t_1]$上で一意解を持つ。
+\end{itembox}
+
+Example 3.4
+以下の線形システムを考える。
+\begin{equation*}
+  \dot x = A(t)x + g(t)=f(t,x)
+\end{equation*}
+ここで、$A(t)$と$g(t)$は$t$について区分的連続な関数である。
+任意の有限区間$[t_0,t_1]$上で$A(t)$の要素は有界である。
+そのため、$\|A(t)\|\leq a$
+以下より定理3.2が成り立つ。
+\begin{equation*}
+  \|f(t,x)-f(t,y)\|=\|A(t)(x-y)\|\leq \|A(t)\|\|x-y\|\leq a\|x-y\|
+  \;,\;x,y \in R^n,t\in [t_0,t_1]
+\end{equation*}
+この線形システムが$[t_0,t_1]$上で一意解を持つことが分かる。
+$A(t),g(t)$が$t\geq t_0$について区分的連続であれば、
+$t$は任意に大きくできるので、
+$t\geq t_0$でシステムは一意解を持つ。システムは有限脱出時間をもつことはできない。
+
+大域的リプシッツ特性を持たないが、一意の大域解を持
+つ滑らかな意味のある例を容易に構築することができ、
+これは定理3.2の保守的な性質を示している。
+
+Example 3.5
+\begin{equation*}
+  \dot x = -x^3 = f(x)
+\end{equation*}
+関数 $f(x)$ はヤコビアン $\partial f/\partial x = -3x^2$
+が大域的に有界でないため、大域的リプシッツ条件を満たさない。
+しかし、任意の初期状態$x(t0)=x_0$に対して、
+この方程式は一意解を持つ。
+\begin{equation*}
+  x(t)=\text{sign}(x_0)\sqrt{
+    \frac{x_0^2}{1+2x_0^2(t-t_0)}
+  }
+\end{equation*}
+
+\begin{itembox}[l]{Theorem3.3}
+  $f(t,x)$が$t$について区分的に連続、
+  $t\geq t_0$,領域$D\subset R^n$上で$x$について局所リプシッツである。
+  $W$を$D$のコンパクト部分集合、$x_0\in W$、
+  $f$のすべての解が$W$に完全に存在することが知られているとする。
+  \begin{equation*}
+    \dot x = f(t,x)\;,\;x(t_0)=x_0
+  \end{equation*}
+  この時、$t\geq t_0$で一意解を持つ。  
+\end{itembox}
+微分方程式を実際に解くことなく、すべての解がコンパクトな集合の
+中にあるという仮定を確認することが必要。
+この点は、安定性を研究するLyapunovの手法が非常に
+有効であることを第4章で確認する。
+
+Example 3.6
+\begin{equation*}
+  \dot x = -x^3 = f(x)
+\end{equation*}
+関数$f(x)$は$R$上で局所リプシッツである。
+ある時に$x(t)$が正であれば、$\dot x(t)$は負となる。
+$x(t)$が負であれば、$\dot x(t)$は正となる。
+よって、任意の初期条件$x(0)=a$で、解はコンパクト集合
+$\{x\in R \mid |x|\leq |a|\}$から離れない。
+定理3.3より、$t\geq 0$で一意解を持つ。
+
+
+% \newpage
+
+% \begin{equation}
+%   \dot x = f(t,x)\;,\;x(t_0) = x_0 \tag{3.1}
+% \end{equation}
+
+% $f(t,x)$が$t$について区分的に連続のとき、
+
+% 初期状態の周辺の領域についてリプシッツである $\rightarrow$  
+% 区間$[t_0,t_0+\delta]$で一意解を持つ。(Theorem3.1)
+
+% 区間$[t_0,t_1]$で大域的リプシッツ$\rightarrow$
+% 区間$[t_0,t_1]$で一意解を持つ。(Theorem3.2)
+
+% $f(t,x)$と$\partial f/\partial x$が
+% $x$の領域$D$について連続のとき、
+
+% $f$は局所リプシッツ(Lemma3.2)。
+% リプシッツ定数$L$の計算方法(Lemma3.1)
+
+% $f(t,x)$と$\partial f/\partial x$が
+% $R^n$について連続のとき、
+
+% $\partial f/\partial x$が有界$\Leftrightarrow$
+% 大域的リプシッツである。
+
+
+
+\end{document}

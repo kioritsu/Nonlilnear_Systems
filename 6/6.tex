@@ -1,0 +1,333 @@
+\documentclass{jsarticle}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[dvipdfmx]{color}
+\usepackage{here}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{url}
+\usepackage[hang,small,bf]{caption}
+\usepackage[subrefformat=parens]{subcaption}
+\usepackage{tikz}
+\usepackage{siunitx}
+\usepackage{bm}
+\usepackage{ascmac}
+\usepackage{tasks}
+\usepackage[top=15truemm,bottom=20truemm,left=20truemm,right=20truemm]{geometry}
+% \usepackage{fancybx}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary {shapes.misc}
+\usetikzlibrary{positioning}
+\captionsetup{compatibility=false}
+
+
+\begin{document}
+
+\section*{6 受動性}
+
+受動性という、リアプノフ安定や$\mathcal L_2$安定性と関連し、非線形システムの分析に有用なツールを提供する。\\
+6.1節:メモリレス非線形系の受動性の定義\\
+6.2節:受動性の定義を状態モデルで表現される力学系に拡張\\
+6.3節:(厳密に)正の実数の伝達関数について、それらが(厳密に)受動的なシステムを表すことを示す\\
+6.4節:受動性とリアプノフ安定性、$\mathcal L_2$安定性の関連性を示す\\
+6.5節:本章の主結果、受動性の定理。受動性定理では、2つの受動的なシステムの（負の）フィードバック接続が受動的であることを述べる。さらに観測可能な条件のもとでは、フィードバック接続は漸近的に安定であることを述べる。
+
+6.5節の受動性定理と5.4節の小利得定理は、ループゲインが1より小さいかループ位相が180度より小さい場合、2つの安定な線形システムのフィードバック接続は安定であるという事実の一般化を提供する。
+
+\section*{6.1 メモリレス関数}
+メモリレス関数$y=h(t, u),h\colon [0, \infty) \times \mathbb R^p \rightarrow \mathbb R^p$の受動性を定義する\\
+
+電気回路網図6.1(a)\\
+- 電圧 $u$ と電流 $y$ を持つ1ポートの抵抗素子を、入力 $u$ と出力 $y$ を持つシステムとみなす。\\
+- 抵抗素子は、電力の流入が常に非負である場合、つまり、$u-y$ 特性上のすべての点$(u, y)$に対して$uy \geq 0$である場合に受動的である。\\
+- $u-y$曲線が第1象限と第3象限にあることを意味する。(図6.1(b))\\
+- 線形抵抗器、オームの法則 $u = Ry$(抵抗$R$)、$y = Gu$(コンダクタンス$G=1/R$) に従うようなものを考える。正の抵抗($R>0$)の場合、 $u-y$ 特性は傾き $G$ の直線であり、 $uy=Gu^2>0\;,\;\forall (u,y)\neq (0,0)$ 。\\
+
+非線形受動抵抗素子\\
+- 第1象限と第3象限にわたる非線形 $u-y$ 曲線を持つ、受動的な抵抗素子のこと(図6.2(a)(b))\\
+- トンネルダイオード特性(図6.2(b))は、曲線がある領域で負の勾配を持っていても、受動的である。\\
+- 受動的でない素子の例(図6.2(c))は、1.2.4節で負抵抗発振器を構成するのに用いた負抵抗の$u-y$特性を示す。\\
+
+$u$ と $y$ がベクトルであるマルチポート・ネットワークの場合\\
+- ネットワークに流れ込む電力は内積 $u^\top y=\sum^p_{i=1}u_i y_i = \sum^p_{i=1}u_ih_i(u)$となる。\\
+- $u^\top y\geq 0\;,\;\forall u$ であれば、ネットワークは受動的である。\\
+
+任意の関数 $y = h(t, u)$ に受動性割り当てる。\\
+$u^\top y$ をシステムへの電力流入と考え、$u^\top y\geq 0\;,\;\forall u$ であれば、システムは受動的であるとよぶ。\\
+
+スカラーの場合\\
+- 入出力関係のグラフは第1象限と第3象限になければならない。\\
+- また、グラフはセクタ$[0, \infty]$のに属す、ここで、$0$ と$\infty$は第1-第3象限領域の境界の傾きである。
+- このグラフ表現は、時間が変化する場合でも有効。この場合、$u-y$ 曲線は時間とともに変化するが、常にセクタ$[0, \infty]$に属す。\\
+
+ベクトルの場合\\
+- $h(t, u)$が、$h_i(t, u)$が$u_i$にのみ依存する特別な場合、つまり
+\begin{align}
+  h(t,u) = 
+  \begin{bmatrix}
+    h_1(t,u_1)\\
+    h_2(t,u_2)\\
+    \vdots \\
+    h_p(t,u_p)
+  \end{bmatrix} \tag{6.1}
+\end{align}
+$h$のグラフ表現を与えることができる。\\
+- この場合、各成分のグラフはセクタ$[0, \infty]$に属す。\\
+- 一般的なケースでは、このようなグラフ表現は不可能であるが、$u^\top h(t, u) \geq 0\;,\;\forall (t,u)$であれば、$h$はセクタ$[0, \infty]$に属するとして、セクタの用語を使い続ける。\\
+
+受動性の極端なケースは、$u^\top y=0$のときであり、系は無損失であると言う。\\
+無損失系の例:(図6.3)理想変圧器\\
+ここで$y = Su$である。
+\begin{align*}
+  u = \begin{bmatrix}
+    v_1 \\ i_2
+  \end{bmatrix},
+  y = \begin{bmatrix}
+    i_1 \\ v_2
+  \end{bmatrix},
+  S = \begin{bmatrix}
+    0 & -N \\
+    N & 0
+  \end{bmatrix}
+\end{align*}
+行列$S$は歪対称行列、つまり、$S+S^\top =0$.
+そのため、$u^\top y = u^\top Su = (1/2)u^\top (S+S^\top )u =0$\\
+
+ある関数$\varphi (u)$に対して$u^\top y\geq u^\top \varphi (u)$を満たす関数$h$を考える。\\
+$u^\top \varphi (u) > 0\;,\;\forall u\neq 0$のとき、$h$は入力厳密受動的と呼ぶ。（受動性は$u = 0$のときのみ$u^\top y = 0$という意味で厳密であるため）。\\
+同様にスカラーの場合、$u-y$グラフは原点以外では$u$軸に接しない。\\
+$u^\top \varphi (u)$は受動性の「過剰」を表す。\\
+一方、$u^\top \varphi (u)$が$u$のある値に対して負である場合、関数$h$は必ずしも受動的ではない。
+$u^\top \varphi (u)$は受動性の「不足」を表す。\\
+受動性の過剰と不足は、$h$がスカラーであり、$\varphi (u)=\epsilon u$である場合に、より明確になる。この場合、$h$はセクタ$[\epsilon, \infty]$に属し、$\epsilon > 0$のとき(図6.4(a))に受動性が過剰になり、$\epsilon < 0$のとき(図6.4(b))に受動性が不足する。\\
+
+受動性の過不足は、図6.4(c)に示す入力-フィードフォワード演算によって取り除くことができる。
+
+新しい出力を$\tilde y = y-\varphi (u)$と定義すると、
+\begin{align}
+  u^\top \tilde y = u^\top [y-\varphi (u)] \geq u^\top \varphi(u)-u^\top \varphi(u) = 0
+\end{align}
+$u^\top y> u^\top \varphi(u)$を満たす関数は、入力フィードフォワードによってセクタ$[0, \infty]$に属す関数に変換することができる。
+このような関数を入力フィードフォワード受動的と呼ぶ。\\
+一方、ある関数$\rho(y)$に対して$u^\top y > y^\top \rho(y)$であるとする。
+前述の場合と同様に、すべての$y\neq 0$に対して$y^\top \rho(y) > 0$のときに受動性が過剰になり、$y$のある値に対して$y^\top \rho(y) < 0$のときに受動性が不足する。\\
+$\rho(y)=\delta y$
+のスカラーの場合の図式表現を図6.5に示す。$\delta > 0$のときに受動性の「過剰」があり、$\delta < 0$のときに受動性の不足がある。
+
+受動性の過不足は、図6.5(c)に示す出力-フィードバック操作によっても取り除くことができる。
+
+新しい入力を$\tilde u = u - \rho(y)$と定義すると、
+\begin{align}
+  \tilde u ^\top y = [u-\rho(y)]^\top y \geq y^\top \rho(y)-y^\top \rho(y)=0
+\end{align}
+$u^\top y > y^\top \rho(y)$ を満たす関数は、出力フィードバックによってセクタ$[0, \infty]$ に属す関数に変換することができる。このような関数を出力フィードバック受動的と呼ぶ。\\
+$y^\top \rho(y) > 0\;,\;\forall y \neq 0$のとき、出力厳密受動的と呼ぶ。（受動性は$y =0$のときのみ$u^\top y = 0$という意味で厳密であるため）
+
+受動性のさまざまな概念を次の定義にまとめる。
+\begin{itembox}[l]{定義6.1}
+  システム $y=h(t,u)$が
+  \begin{itemize}
+    \item $u^\top y \geq 0$ならば、受動的
+    \item $u^\top y = 0$ならば、無損失
+    \item 関数$\varphi$について$u^\top y \geq u^\top \varphi(u)$ならば、入力フィードフォワード受動的
+    \item $u^\top y \geq u^\top \varphi(u)$かつ、$u^\top \varphi(u)>0\;,\;\forall u\neq 0$ならば、入力厳密受動的
+    \item 関数$\rho$について$u^\top y \geq u^\top \rho(y)$ならば、出力フィードバック受動的
+    \item $u^\top y \geq u^\top \rho(y)$かつ、$u^\top \rho(y)>0\;,\;\forall y\neq 0$ならば、出力力厳密受動的
+  \end{itemize}
+  また、全ての$(t,u)$について、不等式が成り立つ。
+\end{itembox}
+
+以下の不等式を満たすスカラー関数$y = h(t, u)$を考える。
+\begin{align}
+  \alpha u^2 \leq uh(t,u)\leq \beta u^2\;,\; \forall (t,u)\tag{6.2}
+\end{align}
+- $\alpha$ と $\beta$ は実数で $\beta \geq \alpha$。\\
+- 関数$h$のグラフは、直線 $y = \alpha u$ と $y=\beta u$ を境界とするセクタ$[\alpha, \beta]$に属す。\\
+- 図6.6は、$\beta> 0$で$\alpha$の符号が異なる場合のセクタ$[\alpha, \beta]$を示したもの。\\
+- (6.2)のいずれかで厳密な不等式が満たされる場合、$h$はセクタ$(\alpha, \beta],[\alpha, \beta),(\alpha, \beta)$に属す。\\
+- 図6.6のセクタを図6.4と図6.5のセクタと比較する。このとき、セクタ$[\alpha, \beta]$ はセクタ$[\alpha, \infty]$ と$[0, \beta]$の共通部なので、セクタ$[\alpha, \beta]$に属す関数は入力フィードフォワード受動性と出力フィードバック受動性を兼ね備えていることがわかる。\\
+
+セクターの定義をベクトルの場合に拡張する。そのために、(6.2)は次と等価であることに注意。
+\begin{align}
+  [h(t,u)-\alpha u][h(t,u)-\beta u]\leq 0\;,\; \forall (t,u) \tag{6.3}
+\end{align}
+ベクトルの場合について、まず(6.1)式を満たす場合を考える。
+各成分$h_i$が定数$\alpha_i,\beta_i>\alpha_i$のセクタ条件(6.2)を満たすとする。
+\begin{align}
+  K_1 = \text{diag}(\alpha_1,\alpha_2,\dots,\alpha_p)\;,\;K_2 = \text{diag}(\beta_1,\beta_2,\dots,\beta_p)
+\end{align} 
+とすると、以下が導出される。
+\begin{align}
+  [h(t,u)-K_1 u][h(t,u)-K_2 u]\leq 0 \;,\;\forall (t,u) \tag{6.4}
+\end{align}
+$K = K_2 - K_1$ は正定値対称（対角）行列であることに注意。
+
+不等式(6.4)は、より一般的なベクトル関数に対しても成り立つ。例えば、$h(t, u)$が次の不等式を満たすとする。
+\begin{align}
+  \|h(t,u)-Lu\|_2 \leq \gamma\|u\|_2 \;,\; \forall (t,u)
+\end{align}
+$K_1 = L-\gamma I,K_2 = L+\gamma I$ とすると、次のように書ける。
+\begin{align}
+  [h(t,u)-K_1u]^\top [h(t,u)-K_2u] = \|h(t,u)-Lu\|^2_2-\gamma^2\|u\|^2_2 \leq 0
+\end{align}
+再び、$K = K_2 - K_1$ は正定値対称（対角）行列である。ベクトルの場合のセクター$[K_1, K_2]$の定義として、正定値対称行列$K = K_2 - K_1$による不等式(6.4)を使用する。次の定義は、セクタの用語について要約したもの。
+
+\begin{itembox}[l]{定義6.2}
+  メモリレス関数$h\colon [0,\infty)\times\mathbb R^p \rightarrow \mathbb R^p$について、
+  \begin{itemize}
+    \item $u^\top h(t,u)\geq 0$ならば、セクタ$[0,\infty]$に属す 
+    \item $u^\top [h(t,u)-K_1u]\geq 0$ならば、セクタ$[K_1,\infty]$に属す
+    \item $K_2 = K_2^\top >0,h^\top (t,u)[h(t,u)-K_2u]\leq 0$ならば、セクタ$[0,K_2]$に属す
+    \item $K=K_2-K_1=K^\top >0,[h(t,u)-K_1u]^\top [h(t,u)-K_2u]\leq 0$ならば、セクタ$[K_1,K_2]$に属す
+  \end{itemize}
+  
+  全ての$(t,u)$について、不等式が成り立つ。不等式が厳密である場合は，そのセクタを $(0,\infty),(K_1,\infty),(0,K_2),(K_1,K_2)$と書く．スカラーの場合は、(6.2)の片辺または両辺が厳密な不等式を満たすことを示すために、$(\alpha, \beta],[\alpha, \beta),(\alpha, \beta)$と書く。
+\end{itembox}
+セクタ$[0, \infty]$は受動性に対応。
+セクタ$[K_1,\infty]$は、$\varphi(u) = K_1u$の入力-フィードフォワード受動性に対応。
+セクタ$[0,K_2],K_2 (1/\delta)I > 0$は、$\rho(y) = \delta y$の出力厳密受動性に対応。図6.7に示すように、セクタ$[K_1,K_2]$の関数が、入力フィードフォワードと出力フィードバックによって、セクタ$[0, \infty]$の関数に変換できることを検証するのは、（練習問題6.1）を参考。
+
+\section*{6.2 状態モデル}
+状態モデルで表される力学系の受動性を定義する。
+\begin{align}
+  \dot x = f(x,u) \tag{6.6}\\
+  y = h(x,u) \tag{6.7}
+\end{align}
+- $f \colon \mathbb R^n \times \mathbb R^p \rightarrow \mathbb R^n$ は局所リプシッツ\\
+- $h \colon \mathbb R^n \times \mathbb R^p \rightarrow \mathbb R^p$ は連続関数\\
+- $f(0,0)=0,h(0,0) = 0$\\
+
+RLC回路(定義の動機付け)\\
+例6.1\\
+- 図6.8は、線形インダクタとコンデンサ、および非線形抵抗を持つRLC回路。\\
+- 非線形抵抗1と3はv-i特性$i_1=h_1(v_1)$と$i_3 =h_3(v_3)$で表される。\\
+- 抵抗2はi-v特性$v_2 = h_2(i_2)$で表される。\\
+- 電圧$u$を入力とし、電流$y$を出力とすると、積$uy$は、ネットワークに流れる電力。\\
+- インダクタに流れる電流$x_1$とコンデンサにかかる電圧$x_2$を状態変数とする。\\
+状態モデルは次のように書ける。
+\begin{align*}
+  L\dot x_1 = u - h_2(x_1)-x_2\\
+  C\dot x_2 = x_1-h_3(x_2)\\
+  y = x_1+h_1(u)
+\end{align*}
+- エネルギーを蓄積する要素として$L$と$C$が存在する。\\
+- 任意の期間$[0, t]$にネットワークによって吸収されるエネルギーが、同じ期間にネットワークに蓄積されるエネルギーの増加以上である場合、システムは受動的である。
+\begin{align}
+  \int^t_0 u(s)y(s) ds \geq V(x(t))-V(x(0)) \tag{6.8}
+\end{align}
+- $V(x) = (1/2)Lx_1^2 + (1/2)Cx_2^2$ はネットワークに蓄積されたエネルギー。\\
+- もし(6.8)が厳密な不等式で成り立つなら、吸収されたエネルギーと蓄積されたエネルギーの増加の差は、抵抗器に消耗したエネルギーでなければならない。\\
+-(6.8)はすべての$t\geq0$に対して成立しなければならないため、瞬時電力不等式 
+\begin{align*}
+  u(t)y(t) \geq \dot V(x(t),u(t)) \tag{6.9}
+\end{align*}
+- ネットワークに流入する電力は、ネットワークに蓄積されるエネルギーの変化率以上でなければならない。
+- 不等式(6.9)は、システムの軌道に沿って$V$の導関数を計算することで調べることができる。
+したがって 
+\begin{align*}
+  \dot V =  & Lx_1\dot x_1 + Cx_2 \dot x_2 = x_1[u-h_2(x_1)-x_2]+x_2[x_1-h_3(x_2)]\\
+  = & x_1[u-h_2(x_1)] - x_2h_3(x_2)\\
+  = & x_1[u-h_1(u)]u-uh_1(u)-x_1h_2(x_1)-x_2h_3(x_2)\\
+  = & uy - uh_1(u) - x_1h_2(x_1)-x_2h_3(x_2)
+\end{align*}
+つまり、
+\begin{align*}
+  uy = \dot V + uh_1(u) + x_1h_2(x_1) + x_2h_3(x_2)
+\end{align*}
+- $h_1,h_2,h_3$が受動的であれば、$uy\geq \dot V$であり、システムは受動的である。\\
+
+他の可能性を考える。
+
+Case1:$h_1=h_2=h_3 = 0,uy = \dot V$であるとき、ネットワークにエネルギー消耗はない、システムは無損失である。
+
+Case2:$h_2,h_3$がセクタ$[0,\infty]$に属すとき、
+\begin{align}
+  uy \geq \dot V + u h_1(u)
+\end{align}
+- $uh_1 (u)$ は受動性の過剰または不足を表す。\\
+- $uh_1 (u) > 0\;,\;\forall u \neq0$であれば、入力$u(t)$が同値的にゼロでない限り、$[0, t]$にわたって吸収されるエネルギーは蓄積エネルギーの増加よりも大きくなり、受動性の過剰が存在。これは入力厳密受動性のケースである。\\
+- 一方、もし$uh_1 (u)$が$u$のある値に対して負であれば、受動性が不足する。メモリレス関数で見たように、この種の受動性の過不足は、図6.4(c)に示す入力フィードフォワードによって取り除くことができる。
+
+Case3:$h_1 = 0$ かつ $h_3 \in  [0, \infty]$ の場合、 
+\begin{align}
+  uy \geq \dot V +  yh_2(y)
+\end{align}
+- $h_2$の受動性の過不足は、ネットワークに同じ性質をもたらす。\\
+- このような受動性の過不足は、メモリレス関数と同様に、図6.5(c)のように出力フィードバックによって取り除くことができる。
+- $yh_2(y) > 0\;,\;\forall y\neq 0$のとき、出力$y(t)$が同値的にゼロでない限り、$[0, t]$にわたって吸収されるエネルギーは蓄積エネルギーの増加よりも大きくなり、出力厳密受動性がある。
+
+Case4:$h_1 \in [0, \infty],h_2 \in (0,\infty),h_3 \in  (0,\infty)$の場合、 
+\begin{align}
+  uy \geq \dot V + x_1 h_2(x_1)+x_2h_3(x_2)
+\end{align}
+- $x_1 h_2(x_1)+x_2h_3(x_2)$ は$x$の正定値関数。\\
+- 状態$x(t)$が同定的にゼロでない限り、$[0, t]$にわたって吸収されるエネルギーは蓄積エネルギーの増加よりも大きくなるので、状態厳密受動性である。\\
+- この性質を持つ系は、状態厳密受動的、あるいは厳密受動的と呼ばれる\\
+- メモリレス関数には状態が存在しないため、状態厳密受動性に対応するものが存在しない。
+
+\begin{itembox}[l]{定義6.3}
+  システム(6.6)-(6.7)は、以下のような連続微分可能な正の半正定値関数$V (x)$（蓄積関数と呼ぶ）が存在する場合、受動的であるという。
+  \begin{align}
+    u^\top y \geq \dot V = \frac{\partial V}{\partial x}f(x,u)\;,\;\forall (x,u)\in \mathbb R^n \times \mathbb R^p
+  \end{align}
+  さらに 
+  \begin{itemize}
+    \item $u^\top y = \dot V$ならば、無損失
+    \item ある関数$\varphi$について、$u^\top y \geq \dot V + u^\top \varphi(u)$ならば、入力フィードフォワード受動的
+    \item $u^\top y \geq \dot V + u^\top \varphi(u)$かつ$u^\top \varphi(u)>0\;,\;\forall u\neq 0$ならば、入力厳密受動的
+    \item ある関数$\rho$について、$u^\top y \geq \dot V + u^\top \rho(y)$ならば、出力フィードバック受動的
+    \item $u^\top y \geq \dot V + u^\top \rho(y)$かつ$u^\top \rho(y)>0\;,\;\forall y\neq 0$ならば、出力厳密受動的
+    \item ある正定値関数$\psi$について、$u^\top y \geq \dot V + \psi(x)$ならば、厳密受動的
+  \end{itemize}
+  全ての$(t,u)$について、不等式が成り立つ
+\end{itembox}
+
+定義6.3は、蓄積関数$V(x)$の存在を除けば、無記憶関数の定義6.1とほぼ同じである。\\
+
+例6.2\\
+図6.9(a)の積分器を考える。
+\begin{align}
+  \dot x = u \;,\; y=x
+\end{align}
+蓄積関数$V(x) = (1/2)x^2$とすると、$uy=\dot v$が得られるため、このシステムは無損失。
+
+図6.9(b)のような、メモリレス関数を積分器に並列につなげたものを考える。
+\begin{align}
+  \dot x = u \;,\; y = x+h(u)
+\end{align}
+並列につなげた、$h(u)$は入力からのフィードフォワードでキャンセルできるため、入力フィードフォワード受動的である。
+蓄積関数$V(x) = (1/2)x^2$とすると、$uy=\dot V +uh(u)$が得られる。
+$h\in [0,\infty]$ならば、システムは受動的。
+$uh(u)>0 \;,\;\forall u\neq 0$ならば、入力厳密安定。
+
+図6.9(c)のようなメモリーレス関数の閉ループを考える。
+\begin{align}
+  \dot x = -h(x) + u \;,\; y = x
+\end{align}
+出力からのフィードバックでキャンセルできるため、出力フィードバック受動的である。
+蓄積関数$V(x) = (1/2)x^2$とすると、$uy=\dot V +yh(y)$が得られる。
+$h\in [0,\infty]$ならば、システムは受動的。
+$yh(y)>0 \;,\;\forall y\neq 0$ならば、出力厳密安定。
+
+
+例6.3\\
+図6.10(a)に示す積分器と受動的メモリーレス関数のカスケード接続は、次式で表される。
+\begin{align}
+  a \dot x = -x + u \;,\; y=h(x)
+\end{align}
+- $h$の受動性は、すべての$x$に対して$\int^x_0 h(\sigma)d\sigma \geq 0$であることを保証。\\
+- $V(x) =\int^x_0 h(\sigma)d\sigma$を蓄積関数とすると、$\dot V = h(x)\dot x = yu$となる。このシステムは無損失。\\
+- ここで、図6.10(b)に示すように、積分器を$a > 0$の伝達関数$1/(as + 1)$で置き換えたとき、システムは次の状態モデルで表現できる。
+\begin{align}
+  a \dot x = -x+u\;,\;y=h(x)
+\end{align}
+$V(x) =a\int^x_0 h(\sigma)d\sigma$を蓄積関数とすると、
+\begin{align}
+  \dot V = h(x)(-x+u) = yu-xh(x)\leq yu
+\end{align}
+したがって、このシステムは受動的である。\\
+すべての $x\neq 0$ に対して $xh(x) > 0$ のとき、システムは厳密受動的である。
+
+
+\end{document}

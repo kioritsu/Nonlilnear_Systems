@@ -1,0 +1,375 @@
+\documentclass{jsarticle}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[dvipdfmx]{color}
+\usepackage{here}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{url}
+\usepackage[hang,small,bf]{caption}
+\usepackage[subrefformat=parens]{subcaption}
+\usepackage{tikz}
+\usepackage{siunitx}
+\usepackage{bm}
+\usepackage{ascmac}
+\usepackage{tasks}
+\usepackage[top=15truemm,bottom=20truemm,left=20truemm,right=20truemm]{geometry}
+% \usepackage{fancybx}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary {shapes.misc}
+\usetikzlibrary{positioning}
+\captionsetup{compatibility=false}
+
+
+\begin{document}
+7/11
+
+\section*{入出力安定性}
+
+本章では、リアプノフ安定性と入出力安定性の関係を理解し、
+small-gain 定理を述べるために必要な用語の紹介をするために、
+入出力アプローチの一部分を紹介する。
+入出力モデルは、システムの出力を入力に直接関連付けるもので、
+状態方程式によって表現される内部構造については何も知らないままである。
+5.1節では、入出力数学モデルを紹介し、入出力的な意味での安定性の概念である
+$\mathcal L$安定性を定義する。
+5.2節では、状態モデルで表現される非線形システムの安定性を研究する。
+5.3節では、時不変システムのクラスに対する$\mathcal L_2$ゲインの計算
+について説明する。最後に、5.4節では、small-gain 定理を紹介する。
+
+\section*{5.1 $\mathcal L$安定性}
+
+入出力関係が以下のように表されるシステムを考える。
+\begin{align}
+  y = Hu
+\end{align}
+- $H$は$u$を用いて$y$を決定する何らかの写像・演算子。\\
+- 入力$u$は、$u\colon [0,\infty)\rightarrow \mathbb R^m$である。
+時間間隔$[0,\infty)$からユークリッド空間$\mathbb R^m$への写像空間に属す。\\
+入力の例：
+$\sup_{t\geq 0} \|u(t)\|<\infty$(区分的連続な有界関数)や$\int^\infty_0 u^\top(t)u(t) dt <\infty $(区分的連続な自乗可積分関数)
+
+
+信号の大きさを測定するために、
+以下の3つの性質を満たすノルム関数$\|u\|$を導入する
+\begin{itemize}
+  \item 信号のノルムは、信号が恒等的に0であるとき、かつその時に限り0となり、
+  それ以外のときは厳密に正である。
+  \item 信号をスケーリングすると、それに対応するノルムもスケーリングを行う。
+  つまり、任意の正の定数$a$、信号$u$に対して、$\|au\|=a\|u\|$が成り立つ。
+  \item ノルムは三角不等式を満たす。
+  任意の信号$u_1,u_2$について、$\|u_1+u_2\|\leq \|u_1\|+\|u_2\|$が成り立つ。
+\end{itemize}
+
+区分的連続な有界関数の空間$\mathcal L^m_\infty$では、ノルムは次のように定義される。
+\begin{align}
+  \|u\|_{\mathcal L_\infty} = \sup_{t\geq 0}\|u(t)\| <\infty
+\end{align}
+
+区分的連続な自乗可積関数の空間$\mathcal L^m_2$では、ノルムは次のように定義される。
+\begin{align}
+  \|u\|_{\mathcal L_2} = \sqrt{\int^\infty_0 u^\top(t)u(t)dt} < \infty
+\end{align}
+
+より、一般的に、区分的連続関数 $u:[0,\infty)\rightarrow \mathbb R^m$の集合で
+定義される空間$\mathcal L^m_p\;,\;1\leq p<\infty$では、ノルムは次のように定義される。
+\begin{align}
+  \|u\|_{\mathcal L_p} = \left( \int^\infty_0 \|u(t)\|_p dt \right)^{1/p} < \infty
+\end{align}
+
+空間$\mathcal L_p^m$の添え字$p$は、空間を定義するのに使われる$p$ノルムの種類、
+添え字$m$は、信号$u$の次元を示す。
+文脈上明らかな場合は、添え字を省略する場合がある。
+空間$\mathcal L$上のベクトル$u$のノルムと、
+$\mathbb R^m$上のベクトル$u(t)$のノルムを区別するために、前者の表記を$\|\cdot \|_{\mathcal L}$
+とする。
+
+入力$u \in  \mathcal L^m $ を「行儀の良い」入力と考えたとき、
+出力 $y$ が $y \in \mathcal L^q$ という意味で「行儀の良い」ものになるかどうか
+を考えたい。ここで、入出力変数の次元が異なることを除き、
+$\mathcal L^q$は$\mathcal L^m$と同じ空間である。\\
+-「行儀の良い」入力であれば「行儀の良い」出力を生成するシステムを安定システムと定義する。\\
+- 入力$u \in \mathcal L^m$が$\mathcal L^q$に属さない出力$y$を生成する可能性がある
+という不安定なシステムを扱いたいため、
+写像$H$を$H:\mathcal L^m \rightarrow \mathcal L^q$とは定義しない。\\
+\newpage
+したがって、$H$を拡張空間$\mathcal L^m_e$から
+拡張空間$\mathcal L^q_e$への写像として定義する。ここで、$\mathcal L^m_e$は
+\begin{align}
+  \mathcal L^m_e = \{u \mid u_\tau \in \mathcal L^m\;,\;\forall \tau \in [0,\infty)\}
+\end{align}
+$u_\tau$は以下で定義されるuの切り捨てとなる。
+\begin{align}
+  u_\tau(t) = \begin{cases}
+    u(t) &0\leq y\leq \tau\\
+    0& \tau < t
+  \end{cases}
+\end{align}
+- 拡張空間$\mathcal L^m_e$は、$\mathcal L^m$を部分集合として含む線形空間。\\
+- 非有界の「増え続ける」信号を扱うことができる。
+
+example: 信号$u(t) = t$\\
+空間$\mathcal L_\infty$に含まれないが拡張空間$\mathcal L_{\infty m}$に含まれる。\\
+有限の$\tau$で空間$\mathcal L_\infty$に含まれるため
+\begin{align}
+  u_\tau(t) = \begin{cases}
+    t &0\leq y\leq \tau\\
+    0& \tau < t
+  \end{cases} 
+\end{align}
+
+写像 $H\colon \mathcal L^m_e \rightarrow \mathcal L^q_e$について、
+出力$(Hu)(t)$の値が、時刻$t$までの入力値のみに依存するとき、
+因果的であると呼ぶ。
+つまり、
+\begin{align}
+  (Hu)_\tau = (Hu_\tau)_\tau
+\end{align}
+
+入力信号と出力信号の空間が定義できたため、入出力安定性を定義する。
+
+\begin{itembox}[l]{定義5.1}
+  (5.1)を満たす、$[0,\infty)$上で定義されたクラス$\mathcal K$関数$\alpha$と、
+  非負定数$\beta$が存在するとき、
+  写像$H:\mathcal L^m_e \rightarrow \mathcal L^q_e$は$\mathcal L$安定である。
+  \begin{align}
+    \|(Hu)_\tau\|_\mathcal L \leq \alpha (\|u_\tau\|_\mathcal L)+\beta \;,\; \forall u\in \mathcal L^m_e\;, \tau \in [0,\infty)\tag{5.1}
+  \end{align}
+
+  (5.2)を満たす、
+  非負定数$\gamma,\beta$が存在するとき、
+  写像$H:\mathcal L^m_e \rightarrow \mathcal L^q_e$は有限ゲイン$\mathcal L$安定である。
+  \begin{align}
+    \|(Hu)_\tau\|_\mathcal L \leq \gamma \|u_\tau\|_\mathcal L+\beta \;,\; \forall u\in \mathcal L^m_e\;, \tau \in [0,\infty)\tag{5.2}
+  \end{align}
+\end{itembox}
+- (5.1),(5.2)式の定数$\beta$はバイアス項と呼ぶ。\\
+- これは、$u= 0$ で$Hu=0$ではないシステムを許容するために定義に含まれている。
+
+不等式(5.2)が成立するような$\beta$が存在する最小の$\gamma$が知りたい。\\
+- $\gamma$をシステムのゲインと呼ぶ。\\
+- ある$\gamma \geq 0$で不等式(5.2)が成立するとき、
+そのシステムは$\gamma$以下の$\mathcal L$ゲインを持つ。
+
+因果関係のある$\mathcal L$安定システムでは、
+以下が成り立つ
+\begin{align}
+  u\in \mathcal L^m &\Rightarrow Hu \in  \mathcal L^q\\
+  \|(Hu)_\tau\|_\mathcal L \leq &\alpha (\|u_\tau\|_\mathcal L)+\beta \;,\; \forall u\in \mathcal L^m
+\end{align}
+因果関係のある有限ゲイン$\mathcal L$安定システムでは、以下が成り立つ
+\begin{align}
+  \|(Hu)_\tau\|_\mathcal L \leq \gamma \|u_\tau\|_\mathcal L+\beta \;,\; \forall u\in \mathcal L^m
+\end{align}
+
+$\mathcal L_\infty$安定性の定義は、
+bounded-input-bounded-output stabilityの概念。\\
+つまり、システムが$\mathcal L_\infty$安定$\Rightarrow$
+すべての有界入力$u(t)$に対して、出力$Hu(t)$は有界。
+
+{\color{gray}\hrulefill}
+\newpage
+
+Example5.1\\
+入力信号 $u(t)$ 、出力信号 $y(t) = h(t, u(t))$を考える。
+ここで、関数$h \colon [0,\infty) \times \mathbb R\rightarrow \mathbb R$は、
+メモリレスかつ、時変になりうる関数。
+この演算子$H$を用いて、$\mathcal L$安定性の定義を説明する。
+
+(1)
+\begin{align}
+  h(u) = a+ b \tanh cu = a+ b \frac{e^{cu}-e^{-cu}}{e^{cu}+e^{-cu}}
+\end{align}
+ここで、$a,b,c$は非負定数である。
+\begin{align}
+  h'(u) = \frac{4bc}{(e^{cu}+e^{-cu})^2} \leq  bc\;,\;\forall u\in \mathbb R
+\end{align}
+であるため、
+\begin{align}
+  |h(u)| \leq a+bc|u| \;,\;\forall u\in \mathbb R
+\end{align}
+よって、$H$は$\gamma = bc,\beta = a$で、有限ゲイン$\mathcal L_\infty$安定。\\
+$a=0$ならば、$p\in [1,\infty)$について、
+\begin{align}
+  \int^\infty_0 |h(t,u)|^p dt \leq (bc)^p\int^\infty_0 |u(t)|^p dt
+\end{align}
+なので、$H$は、各$p\in[1,\infty]$について、$\gamma = bc,\beta = 0$で、
+有限ゲイン$\mathcal L_p$安定。
+
+(2) $h$を以下を満たす時変関数とする。
+\begin{align}
+  |h(t,u)|\leq a|u|\;,\;\forall t \geq 0 , u\in \mathbb R
+\end{align}
+ここで、$a$は正定数。
+$p\in [1,\infty]$について、$H$は、
+$\gamma = a,\beta = 0$で、有限ゲイン$\mathcal L_p$安定。
+
+(3)
+\begin{align}
+  h(u) &= u^2\\
+  \sup_{t\geq 0} |h(u(t))| &\leq (\sup_{t\geq 0}|u(t)|)^2
+\end{align}
+$H$は$\alpha(r)= r^2,\beta = 0$で、$\mathcal L_\infty$安定。
+
+{\color{gray}\hrulefill}
+
+Example5.2\\
+因果的畳み込み演算子
+\begin{align}
+  y(t) = \int^t_0 h(t-\sigma)u(\sigma)d\sigma
+\end{align}
+で定義される単一入力単一出力のシステムを考える。
+ここで、$h(t)=0\;,\;t<0$である。\\
+$h\in \mathcal L_{1e}$を仮定、つまり、
+以下を満たすことを仮定
+\begin{align}
+  \|h_\tau\|_{\mathcal L_{1}} = 
+  \int^\infty_0 |h_\tau(\sigma)|d\sigma = 
+  \int^\tau_0 |h(\sigma)|d\sigma <\infty\;,\;\forall \tau\in [0,\infty)
+\end{align}
+
+$u\in \mathcal L_{\infty e}$かつ$\tau\geq t$ならば、
+\begin{align}
+  \begin{aligned}
+    |y(t)| & \leq \int^t_0 |h(t-\sigma)||u(\sigma)|d\sigma\\
+    & \int^t_0 |h(t-\sigma)|d\sigma \sup_{0\leq \sigma \leq r} |u(\sigma)| = \int^t_0 |h(s)|ds \sup_{0\leq \sigma \leq r} |u(\sigma)|
+  \end{aligned}
+\end{align}
+よって、
+\begin{align}
+  \|y_\tau\|_{\mathcal L_\infty}\leq \|h_\tau\|_{\mathcal L_1}\|u_\tau\|_{\mathcal L_\infty}\;,\;\forall \tau \in [0,\infty)
+\end{align}
+この不等式は(5.2)に似ているが、
+定数$\gamma$にあたる部分が$\tau$に依存している。\\
+$\|h_\tau\|_{\mathcal L_1}$ はすべての有限の$\tau$に対して有界であるが、
+$\tau$で一様有界でない場合がある。\\
+例えば、$h(t)=e^t$は、$\|h_\tau\|_{\mathcal L_1}=(e^\tau -1)$を持ち、
+これはすべての$\tau\in [0,\infty)$について有界であるが、
+$\tau$で一様有界ではない。
+
+$h\in \mathcal L_1$でならば、不等式(5.2)を満たす。つまり、
+\begin{align}
+  \|h\|_{\mathcal L_1} = \int^\infty_0 |h(\sigma)|d\sigma <\infty
+\end{align}
+そのため、不等式
+\begin{align}
+  \|y_\tau\|_{\mathcal L_\infty}\leq \|h\|_{\mathcal L_1}\|u_\tau\|_{\mathcal L_\infty}\;,\;\forall \tau \in [0,\infty)
+\end{align}
+より、システムは有限ゲイン$\mathcal L_\infty$安定。
+
+条件$\|h\|_{\mathcal L_1}<\infty$は
+実際には各$p\in [1,\infty]$に対して有限ゲイン$\mathcal L_p$安定を保証している。\\
+まず、$p = 1$の場合。$t\leq \tau < \infty$のとき以下が成り立つ。
+\begin{align}
+  \int^\tau_0 |y(t)|dt = \int^\tau_0\left| \int^t_0 h(t-\sigma)u(\sigma) d\sigma \right| dt \leq \int^\tau_0 \int^t_0 |h(t-\sigma)||u(\sigma)|d\sigma dt
+\end{align}
+積分の順序を逆にして、
+\begin{align}
+  \int^\tau_0 |y(t)|dt \leq \int^\tau_0 |u(\sigma)|\int^\tau_\sigma |h(t-\sigma)|dt 
+  d\sigma \leq \int^\tau_0 |u(\sigma)| \|h\|_{\mathcal L_1} d\sigma \leq \|h\|_{\mathcal L_1}\|u_\tau\|_{\mathcal L_1}
+\end{align}
+つまり、
+\begin{align}
+  \|y_\tau\|_{\mathcal L_1} \leq \|h\|_{\mathcal L_1}\|u_\tau\|_{\mathcal L_1}\;,\;\forall \tau\in [0,\infty)
+\end{align}
+
+次に、$p\in (1,\infty)$の場合。$q\in (1,\infty)$かつ、$1/p+1/q = 1$である。
+$t\leq \tau<\infty$のとき、
+\begin{align}
+  \begin{aligned}
+    |y(t)| & \leq \int^t_0 |h(t-\sigma)||u(\sigma)|d\sigma\\
+    & = \int^t_0 |h(t-\sigma)|^{1/q}|h(t-\sigma)|^{1/p}|u(\sigma)| d\sigma\\
+    & \leq \left( \int^t_0 |h(t-\sigma)|d\sigma \right)^{1/q} \left( \int^t_0|h(t-\sigma)||u(\sigma)|^pd\sigma \right)^{1/p}\\
+    & \leq (\|h_\tau\|_{\mathcal L_1})^{1/q}\left( \int^t_0 |h(t-\sigma)||u(\sigma)|^p d\sigma\right)^{1/p}
+  \end{aligned}
+\end{align}
+ここで、2番目の不等式はHölderの不等式を適用している。
+\begin{align}
+  \begin{aligned}
+    (\|y_\tau\|_{\mathcal L_p})^p &= \int^\tau_0|y(t)|^p dt\\
+    & \leq \int^\tau_0(\|h_\tau\|_{\mathcal L_1})^{p/q}\left( \int^t_0|h(t-\sigma)||u(\sigma)|^p d\sigma \right)dt\\
+    & = (\|h_\tau\|_{\mathcal L_1})^{p/q}\int^\tau_0 \int^t_0 |h(t-\sigma)||u(\sigma)|^p d\sigma dt
+  \end{aligned}
+\end{align}
+積分の順序を逆にして、
+\begin{align}
+  \begin{aligned}
+    (\|y_\tau\|_{\mathcal L_p})^p &\leq (\|h_\tau\|_{\mathcal L_1})^{p/q}\int^\tau_0|u(\sigma)|^p \int^\tau_\sigma |h(t-\sigma)|dtd\sigma\\
+    & \leq (\|h_\tau\|_{\mathcal L_1})^{p/q}\|h_\tau\|_{\mathcal L_1}(\|u_\tau\|_{\mathcal L_p})^p = (\|h_\tau\|_{\mathcal L_1})^p(\|u_\tau\|_{\mathcal L_p})^p
+  \end{aligned}
+\end{align}
+よって、
+\begin{align}
+  \|y_\tau\|_{\mathcal L_p} \leq \|h\|_{\mathcal L_1} \|u_\tau\|_{\mathcal L_p}
+\end{align}
+まとめると、
+$\|h\|_{\mathcal L_1}<\infty$ならば、各$p\in [1,\infty]$について
+$\gamma = \|h\|_{\mathcal L_1},\beta = 0$で有限ゲイン$\mathcal L_p$安定。
+
+{\color{gray}\hrulefill}
+
+定義5.1の欠点は、
+入力空間$\mathcal L^m$内のすべての信号に対して不等式(5.1),(5.2)
+を満たす必要があること。
+これは、入力空間の部分集合に対してのみ入出力関係が定義される可能性があるシステム
+を除外するものである。
+次の例題は、この点を探り、例題に続く小信号安定性の定義を動機づけるものである。
+
+{\color{gray}\hrulefill}
+
+Example5.3\\
+非線形単一入力単一出力システムを考える。
+\begin{align}
+  y = \tan u
+\end{align}
+出力$y(t)$は、入力信号が
+\begin{align}
+  |u(t)|<\frac{\pi}{2}\;,\;\forall t\geq 0
+\end{align}
+に制限されたときのみ定義可能である。
+
+したがって、このシステムは定義5.1の意味での$\mathcal L_\infty$安定ではない。
+しかし、$u(t)$を
+\begin{align}
+  |u|\leq r < \frac{\pi}{2}
+\end{align}
+に限定すると、
+\begin{align}
+  |y| \leq \left(\frac{\tan r}{r}\right)|u|
+\end{align}
+となり、システムは
+$|u(t)|\leq r \;,\;\forall t\geq 0$を満たすような全ての$u\in \mathcal L_p$について
+以下の不等式を満たすことになる。
+\begin{align}
+  \|y\|_{\mathcal L_p} \leq \left(\frac{\tan r}{r}\right)\|u\|_{\mathcal L_p}
+\end{align}
+ここで$p\in [1,\infty]$である。
+
+$\mathcal L_\infty$空間では、$|u(t)|\leq r$という条件は、
+$\|u\|_{\mathcal L_\infty}\leq r$を意味し、
+条件の不等式がノルムの小さい入力信号に対してのみ成立することを示す。\\
+しかし、$p<\infty$のときの$\mathcal L_p$空間では、
+$|u(t)|$上界の条件は、必ずしも入力信号のノルムを制限するものではない。
+例えば、各$p \in [1,\infty]$に対して$\mathcal L_p$に属する信号
+\begin{align}
+  u(t) = re^{-rt/a}\;,\;a>0
+\end{align}
+は、$|u(t)|\leq r$を満たすが、
+その$\mathcal L_p$ノルム
+\begin{align}
+  \|u\|_{\mathcal L_p} = r\left(\frac{a}{rp}\right)^{1/p}\;,\;1\leq p <\infty
+\end{align}
+は大きく成り得る。
+
+{\color{gray}\hrulefill}
+
+\begin{itembox}[l]{定義5.2}
+  写像$H \colon \mathcal L^m_e \rightarrow \mathcal L^q_e$が
+  $\sup_{0\leq t\leq \tau} \|u(t)\|\leq r$を満たす、
+  すべての$u \in \mathcal L^m_e$に対して、
+  不等式(5.1)[または、(5.2)]を満たすような正の定数$r$が存在するならば、
+  小信号$\mathcal L$安定（小信号有限ゲイン$\mathcal L$安定）であると呼ぶ。
+\end{itembox}
+
+\end{document}

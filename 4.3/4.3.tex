@@ -1,0 +1,656 @@
+\documentclass{jsarticle}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[dvipdfmx]{color}
+\usepackage{here}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{url}
+\usepackage[hang,small,bf]{caption}
+\usepackage[subrefformat=parens]{subcaption}
+\usepackage{tikz}
+\usepackage{siunitx}
+\usepackage{bm}
+\usepackage{ascmac}
+\usepackage[top=15truemm,bottom=20truemm,left=20truemm,right=20truemm]{geometry}
+% \usepackage{fancybx}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary {shapes.misc}
+\usetikzlibrary{positioning}
+\captionsetup{compatibility=false}
+
+
+
+\begin{document}
+4/28
+
+\section*{4.3 線形システムと線形化}
+線形時不変システム
+\begin{equation*}
+  \dot x = Ax \tag{4.9}
+\end{equation*}
+$\det (A) \neq 0\Leftrightarrow x=0$に孤立した平衡点\\
+$\det (A) = 0$のとき，
+\begin{itemize}
+  \item 非自明なヌル空間を持ち，$A$のヌル空間の全ての点が平衡点である．
+  \item システムは平衡部分空間を持つ．
+  \item[※] 線形システムは，複数の孤立した平衡点を持つことができない．
+  \item $\bar x_1,\bar x_2$がシステム(4.9)の平衡点であるとき，
+  線形性より，その２つの点を結ぶ線上の全ての点が平衡点．
+\end{itemize}
+
+
+(4.9)の解は初期状態$x(0)$を用いて
+\begin{equation*}
+  x(t) = \exp(At)x(0) \tag{4.10}
+\end{equation*}
+
+行列$A$は非特異行列$P$(行列の成分は実数に限らない)を用いてジョルダン形に変形可能
+\begin{equation*}
+  P^{-1}AP=J = \text{block diag}[J_1,J_2,\dots ,J_r]
+\end{equation*}
+$J_i$は，$A$の固有値$\lambda_i$に関するジョルダンブロック．\\
+次数1のジョルダンブロックは$J_i = \lambda_i$，
+時数$m_i>1$のジョルダンブロックは，
+\begin{equation*}
+  J_i = \left[
+    \begin{matrix}
+      \lambda_i & 1 & 0 & \dots & \dots & 0\\
+      0 & \lambda_i & 1 & 0 & \dots & 0\\
+      \vdots && \ddots &&&\vdots \\
+      \vdots &&&\ddots && 0\\
+      \vdots &&&& \ddots & 1 \\
+      0 & \dots &\dots & \dots & 0 & \lambda_i 
+    \end{matrix}
+  \right]_{m_i\times m_i.}
+\end{equation*}
+これらを用いて，以下が成り立つ？
+\begin{equation*}
+  \exp(At) = P \exp(Jt) P^{-1} = 
+  \sum^r_{i=1}\sum^{m_i}_{k=1} t^{k-1} \exp(\lambda_i t)R_{ik} \tag{4.11}
+\end{equation*}
+($R_{ik}$が何か分からないが，
+$\exp(At)$の各要素に$t^{k-1} \exp(\lambda_i t)$が含まれることに着目)\\
+$m_i$はジョルダンブロック$J_i$の次数．\\
+$n\times n$の行列$A$が代数的多重度$q_i$
+の固有値$\lambda_i$を持つ時，
+$\text{rank}(A-\lambda_i I) = n-q_i\Leftrightarrow$
+ジョルダンブロック$J_i$の次数が1．
+
+{\color{gray}\hrulefill}
+
+線形時不変システムの原点の安定性に関する定理．
+
+\begin{itembox}[l]{定理4.5}
+  $\dot x = Ax$の平衡点$x=0$が()安定\\
+  $\Leftrightarrow$
+  $A$の全ての固有値が$\text{Re}\lambda_i\leq 0$を満たし,
+  $\text{Re}\lambda_i=0$である$i$について，代数的多重度$q_i\geq 2$
+  であるとき、$\text{rank}(A-\lambda_i I) = n-q_i$を満たす．
+
+  平衡点$x=0$が(大域的)漸近安定\\
+  $\Leftrightarrow$$A$の全ての固有値が$\text{Re}\lambda_i< 0$を満たす．
+\end{itembox}   
+
+\begin{proof}
+  (4.10)より，原点が安定$\Leftrightarrow$$\exp(At)$が有界関数$\forall t$\\
+  $A$の固有値が少なくとも１つ$\text{Re}\lambda_i> 0$であることを仮定．
+  $\lim_{t\rightarrow \infty}\exp(\lambda_it)=\infty$となるため、有界関数ではない。
+  
+  $\text{Re}\lambda_i= 0$の場合，
+  ジョルダンブロックの次数が1より大きいとき、
+  (4.11)式の $t^{k-1}$ の項が大きくなり，発散する．
+  ジョルダンブロック$J_i$の次数が1$\Leftrightarrow$
+  $\text{rank}(A - \lambda_i I) = n-q_i$。\\
+  したがって，原点の安定性条件が求まる．
+
+  原点が漸近安定$\Leftrightarrow$
+  $\lim_{t \rightarrow \infty}\exp(At)=0$．\\
+  行列$A$の全ての固有値が$\text{Re}\lambda_i< 0$を満たすとき，
+  $\lim_{t\rightarrow \infty}\exp(\lambda_it)=0$である．
+  したがって，原点の漸近安定性条件が求まる．
+  
+  最後に，$x(t)$ は初期状態 $x(0)$ に線形に依存することから，
+  原点の漸近安定性が大域的であることも示される．
+\end{proof}
+% この証明は，虚軸上で繰り返される固有値が，
+% なぜランク条件$\text{rank}(A-\lambda_i I) = n-q_i$
+% を満たす必要があるかを数学的に示している．
+
+{\color{gray}\hrulefill}
+
+次の例では，定理 4.5の物理的
+な意味について考える．
+
+Example 4.12\\
+図 4.6 に,2 つの同一システムの直列接続と並列接続を示す．
+各システムは，以下の状態モデルで表される．
+\begin{align*}
+  \dot x = & \left[\begin{matrix}
+    0 & 1 \\ -1 & 0\\
+  \end{matrix}\right]x + 
+  \left[
+    \begin{matrix}
+      0\\ 1\\
+    \end{matrix}
+  \right]u\\
+  y = & \left[\begin{matrix}
+    1& 0
+  \end{matrix}\right]x
+\end{align*}
+ここで，$u,y$は入力と出力．
+
+(外部からの入力がない)式(4.9)の形で，モデル化した場合の
+直列接続と並列接続の行列を$A_s,A_p$とする．
+\begin{equation*}
+  A_p = \left[\begin{matrix}
+    0&1&0&0\\
+    -1&0&0&0\\
+    0&0&0&1\\
+    0&0&-1&0
+  \end{matrix}\right]\; \text{and}\;
+  A_s = \left[\begin{matrix}
+    0&1&0&0\\
+    -1&0&0&0\\
+    0&0&0&1\\
+    1&0&-1&0
+  \end{matrix}\right]
+\end{equation*}
+行列$A_s,A_p$は，
+虚軸上で同じ固有値$\pm j = \pm \sqrt{-1}$
+で代数的多重度$q_i = 2$を持つ．
+
+並列接続\\
+$\text{rank}(A_p-jI) =2= n-q_i$、原点は安定。\\
+非ゼロの初期条件によって周波数1rad/secの正弦波振動が生じる。
+これは時間についての有界関数。そのため、正弦波信号の和は常に有界。
+
+直列接続\\
+$\text{rank}(A_s-jI) \neq 3= n-q_i$、原点は不安定。\\
+1つ目のシステムで、非ゼロの初期条件によって周波数1rad/secの正弦波振動が生じる。
+2つ目のシステムで、共振を引き起こし，非有界になり得る。
+
+{\color{gray}\hrulefill}
+
+行列$A$の全ての固有値が$\text{Re}\lambda_i <0$を満たすとき，
+Hurwitz matrix や安定行列と呼ばれる．\\
+(定理4.5)行列$A$が安定行列$\Leftrightarrow$(4.9)において原点は漸近安定．\\
+原点の漸近安定性をリアプノフ法を用いて考える．
+リアプノフ候補関数$V(x)$
+\begin{equation*}
+  V(x) = x^\top Px
+\end{equation*}
+ここで，$P$は実正定値対称行列．
+\begin{equation*}
+  \dot V(x) = -x^\top(PA+A^\top P)x=-x^\top Qx
+\end{equation*}
+\begin{equation*}
+  PA+A^\top P = -Q \tag{4.12}
+\end{equation*}
+定理4.1より，$Q$が正定値行列であれば原点は漸近安定である．
+
+リアプノフ法\\
+1. $V(x)$が正定値になるよう選ぶ．\\
+2. $\dot V(x)$が負正定値であることを確認．
+
+線形システムの場合，(4.12)が
+正定値の解を持つ場合漸近安定である．
+(4.12)をリアプノフ方程式とよぶ．
+
+\begin{itembox}[l]{定理4.6}
+  $A$が安定行列，つまり，全ての固有値が$\text{Re}\lambda_i <0$を満たす\\
+  $\Leftrightarrow$
+  任意の正定対称行列$Q$について，リアプノフ方程式を満たす，正定対称行列$P$が存在する。
+  $P$は一意解である。
+\end{itembox}
+\begin{proof}
+  リアプノフ方程式$\Rightarrow$ $A$が安定行列\\
+  定理4.1参照。
+
+  $A$が安定行列$\Rightarrow$ リアプノフ方程式\\
+  $A$が安定行列と仮定．
+  以下の正定値対称行列$P$を考える．
+  \begin{equation*}
+    P= \int^\infty_0 \exp(A^\top t)Q \exp(At)dt \tag{4.13}
+  \end{equation*}
+
+  $P$の正定値性についての証明\\
+  もし，$P$が正定値行列でなければ，$x^\top Px=0$を満たす，
+  $x\neq 0$が存在する．しかし，
+  \begin{align*}
+    x^\top P x = 0 &\Rightarrow \int^\infty_0 x^\top\exp(A^\top t)Q \exp(At)xdt =0\\
+    & \Rightarrow \exp(At)x = 0\;,\;\forall t\geq 0 \Rightarrow x=0
+  \end{align*}
+  $\exp(At)$の非特異性より矛盾するため，$P$は正定値行列である．
+
+  (4.13)式をリアプノフ方程式(4.12)の左辺に代入し，
+  \begin{align*}
+    PA + A^T P &= \int_{0}^{\infty} \exp({A^\top t}) Q \exp({A t}) A dt + \int_{0}^{\infty} A^\top\exp({A^\top t}) Q \exp({A t}) dt\\
+    &= \int_{0}^{\infty} \frac{d}{dt} \exp({A^\top t}) Q \exp({A t}) dt \\
+    &= \left. \exp({A^\top t}) Q \exp({A t}) \right|_{0}^{\infty} = - Q
+  \end{align*}
+  よって，(4.13)で表される$P$が(4.12)の解であることが分かる．
+
+  次に，$P$が一意解であることの証明\\
+  $\tilde{P}\neq P$を別解と仮定．以下が成り立つ．
+  \begin{equation*}
+    (P-\tilde{P})A + A^\top (P-\tilde{P}) = 0
+  \end{equation*}
+  この式に，$\exp(A^\top t)$を左から，$\exp(At)$を右からかける．
+  \begin{equation*}
+    0 = \exp(A^\top t)[(P-\tilde{P})A + A^\top (P-\tilde{P})]\exp(At) = \frac{d}{dt}\{\exp(A^\top t)(P-\tilde{P})\exp(At)\}
+  \end{equation*}
+  よって，
+  \begin{equation*}
+    \exp(A^\top t)(P-\tilde{P})\exp(At) = \text{constant} \;\forall t
+  \end{equation*}
+  ここで，$\exp(A0)=I$より，$\exp(A^\top t)(P-\tilde{P})\exp(At)=P-\tilde{P}$.
+  \begin{equation*}
+    \lim_{t\rightarrow \infty} \exp(A^\top t)(P-\tilde{P})\exp(At) = 0
+  \end{equation*}
+  $P = \tilde{P}$となり，$P$は一意解である．
+\end{proof}
+$Q$の正定値性の条件は緩和できる．
+$Q$ が$Q = C^\top C$の半正定値行列として置き換えることが可能．
+ここで，$(A, C)$が可観測． (Exercise4.22)
+
+{\color{gray}\hrulefill}
+
+(4.12)は線形代数方程式であり，$Mx = y$の形に並べ替えることで解くことができる．
+
+
+Example 4.13\\
+$A$の固有値を計算する代わりに，
+行列$A$が安定行列であるかどうかを調べる．
+\begin{equation*}
+  A = \left[
+    \begin{matrix}
+      0&-1\\1&-1
+    \end{matrix}
+  \right]\;,\;
+  Q = \left[
+    \begin{matrix}
+      1&0\\0&1
+    \end{matrix}
+  \right]\;,\;
+  P = \left[
+    \begin{matrix}
+      p_{11} & p_{12}\\
+      p_{12} & p_{22}
+    \end{matrix}
+  \right] 
+\end{equation*}
+ここで対称性より，$p_{12}=p_{21}$
+リアプノフ方程式(4.12)は，次のように書き換えることができる．
+はじめに，正定値行列 $Q$（例えば$Q = I$）を選ぶ。
+
+\begin{equation*}
+  \left[
+    \begin{matrix}
+      0&2&0\\-1&-1&1\\0&-2&-2
+    \end{matrix}
+  \right]\left[
+    \begin{matrix}
+      p_{11}\\p_{12}\\p_{22}
+    \end{matrix}
+  \right]=\left[
+    \begin{matrix}
+      -1\\0\\-1
+    \end{matrix}
+  \right]
+\end{equation*}
+$P$についてLyapunov方程式 （4.12）を解く．
+\begin{equation*}
+  \left[
+    \begin{matrix}
+      p_{11}\\p_{12}\\p_{22}
+    \end{matrix}
+  \right]=\left[
+    \begin{matrix}
+      1.5\\-0.5\\1.0
+    \end{matrix}
+  \right] \Rightarrow P =\left[
+    \begin{matrix}
+      1.5&-0.5\\-0.5&1.0
+    \end{matrix}
+  \right]
+\end{equation*} 
+
+行列 $P$は，その主座小行列式（1.5 と1.25）が正であるため，
+正定値行列．したがって，$A$は安定行列．\\
+※計算上の利点はない
+
+リアプノフ方程式のメリット
+\begin{itemize}
+  \item (線形システムの安定性解析)
+  \item $A$が安定行列であるときに
+  任意の線形システム$\dot x = Ax$に対してリアプノフ関数を見つけることができる。
+\end{itemize}
+
+任意の線形システムに対してリアプノフ関数が存在すれば，
+右辺$Ax$が摂動されたときに，その摂動が$A$の係数の線形摂動であろうと
+非線形摂動であろうと，システムについての結論を導き出すことができる．
+この利点は，Lyapunovの手法の勉強を続けるうちに明らかになるであろう．
+
+{\color{gray}\hrulefill}
+
+非線形システム
+\begin{equation*}
+  \dot x = f(x) \tag{4.14}
+\end{equation*}
+$f:D\rightarrow R^n$の連続微分可能な写像\\
+原点$x=0\in D$，$f(0)=0$を仮定．平均値の定理より，
+\begin{equation*}
+  f_i(x) = f_i(0)+\frac{\partial f_i}{\partial x}(z_i)x
+\end{equation*}
+$z_i$は原点と$x$を結ぶ線分上の点\\
+原点と$x$を結ぶ線分は全て$D$内に存在する．
+$f(0)=0$より，
+\begin{equation*}
+  f_i(x) = \frac{\partial f_i}{\partial x}(z_i)x 
+  = \frac{\partial f_i}{\partial x}(0)x +
+  \left[\frac{\partial f_i}{\partial x}(z_i)-\frac{\partial f_i}{\partial x}(0)\right]x
+\end{equation*}
+つまり，
+\begin{equation*}
+  f(x)=Ax + g(x)
+\end{equation*}
+\begin{equation*}
+  A = \frac{\partial f}{\partial x}(0)\;,\;g_i(x)=\left[\frac{\partial f_i}{\partial x}(z_i)-\frac{\partial f_i}{\partial x}(0)\right]x
+\end{equation*}
+関数$g_i(x)$は以下を満たす．
+\begin{equation*}
+  |g_i(x)|\leq \left\|\frac{\partial f_i}{\partial x}(z_i)-\frac{\partial f_i}{\partial x}(0)\right\|\|x\|
+\end{equation*}
+$[\partial f/\partial x]$の連続性より
+\begin{equation*}
+  \lim_{\|x\|\rightarrow 0} \frac{\|g(x)\|}{\|x\|} = 0
+\end{equation*}
+つまり，原点の近傍では，非線形システム(4.14)を
+原点についての線形化近似可能．
+\begin{equation*}
+  \dot x = Ax\;,\; A = \frac{\partial f}{\partial x}(0)
+\end{equation*}
+
+{\color{gray}\hrulefill}
+
+次の定理は，
+線形化近似システムの平衡点としての安定性を調べることによって，
+もとの非線形システムの平衡点としての原点の安定性を導き出すことができる条件を示す．
+この定理は，Lyapunovの間接法として知られている．
+\begin{itembox}[l]{定理4.7}
+  $x=0$を非線形システムの平衡点とする．
+  \begin{equation*}
+    \dot x = f(x)
+  \end{equation*}
+  ここで，$f:D\rightarrow R^n$連続微分可能であり，
+  $D$は原点近傍である．
+  \begin{equation*}
+    A = \left.\frac{\partial f}{\partial x}(x)\right|_{x=0}
+  \end{equation*}
+  このとき，\\
+  1. $A$の全ての固有値が$\text{Re}\lambda_i <0$ならば，原点は漸近安定である．\\
+  2. $A$の固有値が少なくとも１つ$\text{Re}\lambda_i >0$ならば，原点は不安定である．
+\end{itembox}
+\begin{proof}
+  1の証明．\\  
+  まず，$A$を安定行列と仮定．定理4.6より，
+  任意の正定対称行列$Q$に対してリアプノフ方程式(4.12)の解$P$は正定値行列である．
+  
+  次に，非線形システムに対するリアプノフ関数候補として$V(x) = x^\top Px$
+  を使用し，その導関数を求める．
+  \begin{align*}
+    \dot{V}(x) &= x^\top Pf(x) + f^\top Px\\
+    &=x^\top P[Ax +g(x)]+[x^\top A^\top +g^\top (x)]Px\\
+    &=x^\top (PA+A^\top P)x + 2x^\top P g(x)\\
+    &= -x^\top Qx +2x^\top Pg(x)
+  \end{align*}
+  
+  右辺第1項は負定値，右辺第2項は一般に不定．
+  関数g(x)は以下を満たします．
+  
+  \begin{equation*}
+    \lim_{\|x\|_2\rightarrow 0} = \frac{\|g(x)\|_2}{\|x\|_2}=0
+  \end{equation*}
+
+  よって，任意の$\gamma >0$について，以下を満たすような$r>0$が存在する．
+  \begin{equation*}
+    \|g(x)\|_2<\gamma \|x\|_2<r
+  \end{equation*}
+
+  したがって，以下が成り立ちます．
+
+  \begin{equation*}
+    \dot V(x) < -x^\top Qx + 2 \gamma\|P\|_2\|x\|^2_2\;,\;\forall \|x\|_2<\gamma
+  \end{equation*}
+また，
+\begin{equation*}
+  x^\top Q x \geq \lambda_{min}(Q)\|x\|^2_2
+\end{equation*}
+ここで，$\lambda_{min}(\cdot)$は行列の最小固有値を表し，
+$Q$が正定対称行列であるため，$\lambda_{min}(Q)$は正の実数．
+したがって，
+\begin{equation*}
+  \dot V(x) < -[\lambda_{min}(Q)-2\gamma\|P\|_2]\|x\|^2_2\;,\;\forall \|x\|_2<r
+\end{equation*}
+
+$\gamma < (1/2)\lambda_{min}(Q)/\|P\|_2$を選ぶことで，
+$\dot V(x)$が負定値であることが示される．
+従って，定理4.1により，原点は漸近安定である．
+
+2の証明．\\
+まず，$A$の固有値が虚軸上になく、
+$\text{Re}\lambda_i >0 \;\text{or} \;\text{Re}\lambda_i <0$の場合．\\
+非特異行列$T$により，以下が成立する．
+\begin{equation*}
+  TAT^{-1} = \begin{bmatrix}
+-A_1 & 0 \\
+0 & A_2
+\end{bmatrix}
+\end{equation*}
+ここで，$A_1$と$A_2$は安定行列．
+\begin{equation*}
+  z = Tx = \begin{bmatrix}
+    z_1 \\ z_2
+  \end{bmatrix}
+\end{equation*}
+とすると，$z$の分割は$A_1$と$A_2$の次元と等しい．
+$z = Tx$の変数変換により，システム
+\begin{equation*}
+  \dot{x} = Ax + g(x)
+\end{equation*}
+
+は，以下の形式に変換できる．
+
+\begin{align*}
+\dot{z_1} &= -A_1z_1 + g_1(z) \\
+\dot{z_2} &= A_2z_2 + g_2(z)
+\end{align*}
+
+ここで，$g_i(z)$の特性として，
+任意の$\gamma >0$について，以下を満たすような$r>0$が存在する．
+  \begin{equation*}
+    \|g(z)\|_2<\gamma \|z\|_2<r \;,\;\forall \|z\|_2\leq r\;,\;i=1,2
+  \end{equation*}
+  原点$z = 0$は，$z$座標におけるシステムの平衡点である．
+  $T$が非特異であるため，$z = 0$の安定性に関する結論は，
+  $x$座標の平衡点$x = 0$に引き継がれる．
+  原点が不安定であることを示すために，定理4.3を適用する．
+
+  関数$V(z)$の構成は，スカラーではなくベクトルを扱うことを除いて，
+  Example 4.7と基本的に同じ．
+  ここで，$Q_1$と$Q_2$はそれぞれ$A_1$と$A_2$の次元の正定対称行列であり，
+  $A_1$と$A_2$が安定行列であるため，定理4.6から，リアプノフ方程式
+
+  \begin{equation*}
+    P_iA_i + A_i^\top P_i = —Q_i\;,\; i = 1,2
+  \end{equation*}
+  
+  は，それぞれユニークな正定対称解$P_1$と$P_2$を持つ．ここで，
+  \begin{equation*}
+    V(z) = z_1^\top P_1z_1 — z_2^\top P_2z_2 = z^\top\begin{bmatrix}
+      P_1 &0\\ 
+  0 & —P_2
+    \end{bmatrix} z
+  \end{equation*}
+  
+  
+  とする．$z_2 = 0$の部分空間では，原点に任意に近い点で$V(z) > 0$．また，
+  \begin{equation*}
+    U = \{z\in R^n \mid \|z\|_2\leq r \;\text{and}\; V(z)>0 \}
+  \end{equation*}
+  とし，$U$の中で，以下の不等式が成り立つ．
+  \begin{align*}
+    \dot V(z) =& -z_1^\top (P_1A_1 + A_1^\top P_1)z_1 + 2z_1^\top P_1g_1(z)\\
+    &-z_2^\top (P_2A_2 + A_2^\top P_2)z_2 + 2z_2^\top P_2g_2(z)\\
+    = & z_1^\top Q_1z_1 + z_2^\top Q_2 z_2 + 2z^\top \begin{bmatrix}
+      P_1g_1(z)\\ -P_2g_2(z)
+    \end{bmatrix}\\
+    \geq &\lambda_{min}(Q_1)\|z_1\|^2_2 + \lambda_{min}(Q_2)\|z_2\|_2^2\\
+    & -2\|z\|_2 \sqrt{ \|P\|^2_2 \|g_1(z)\|^2_2 + \|P_2\|^2_2\|g_2(z)\|^2_2 }\\
+    > & (\alpha -2 \sqrt{2}\beta \gamma)\|z\|^2_2
+  \end{align*}
+  ここで，
+  \begin{equation*}
+    \alpha = \min \{\lambda_{min}(Q_1),\lambda_{min}(Q_2)\} \;\text{and}\; \beta = \max\{\|P_1\|_2,\|P_2\|_2\}
+  \end{equation*}
+  とし，$\gamma < \alpha/(2\sqrt{2} \beta)$を選ぶことで，
+  $\dot V(z) > 0 \;\text{in}\; U$となる．従って，定理4.3により，原点は不安定．
+
+  この定理4.3を元の座標で適用するには，
+  次のような行列を定義しても可能．
+  \begin{equation*}
+    P = T^\top \begin{bmatrix}
+      P_1 & 0\\ 0& -P_2
+    \end{bmatrix}T\;,\;
+    Q = T^\top \begin{bmatrix}
+      Q_1 & 0\\ 0 & Q_2
+    \end{bmatrix}T
+  \end{equation*}
+ここで，$Q$は正定対称行列であり，$V(x) = x^\top Px$は原点$x = 0$に任意に近い点で正．
+  
+  次に，$A$が右半面複素平面内の固有値だけでなく，
+  虚軸上の固有値も持つ一般的な場合を考える．
+  ここで，虚軸上の固有値が$m$個あり，$\text{Re}\lambda_i > \delta > 0$であるとする．
+  すると，行列$[A - (\delta /2)I]$は，右半面複素平面内の固有値を持ち，
+  虚軸上の固有値を持たない．
+  前述の議論から，行列$P = P^\top\;,\;Q = Q^\top > 0$が存在し，
+  \begin{equation*}
+    P\begin{bmatrix}
+      A-\frac{\delta}{2}I
+    \end{bmatrix}+\begin{bmatrix}
+      A - \frac{\delta}{2}I
+    \end{bmatrix}^\top P = Q
+  \end{equation*}
+となる．ここで，$V(x) = x^\top Px$
+は原点に任意に近い点で正．システムの軌道に沿った$V(x)$の微分は以下で与えられる．
+\begin{align*}
+  \dot V(x) & = x^\top (PA + A^\top P)x + 2x^\top Pg(x)\\
+  & = x^\top \left[
+    P(A-\frac{\delta}{2}I) + (A-\frac{\delta}{2}I)^\top P
+  \right]x+\delta x^\top Px + 2x^\top Pg(x)\\
+  & = x^\top Q x + \delta V(x) + 2x^\top P g(x)
+\end{align*}
+集合
+\begin{equation*}
+  \{x\in R^n \mid \|x\|_2 \leq r \text{and} V(x)>0\}
+\end{equation*}
+ここで，$r$は$\|x\|_2＜r$に対して$\|g(x)\|_2\leq \gamma \|x\|_2$
+となるように選ばれ，$\dot V(x)$は以下を満たす．
+\begin{equation*}
+  \dot V(x) \geq \lambda_{min}(Q)\|x\|^2_2 - 2\|P\|_2\|x\|_2\|g(x)\|_2\geq 
+  (\lambda_{min}(Q)-2\gamma\|P\|_2)\|x\|_2^2
+\end{equation*}
+そのため，$\gamma < (1/2)\lambda_{min}(Q)/\|P\|_2$で正．
+
+\end{proof}
+
+定理4.7は，原点における平衡点の安定性を決定するための
+簡単な手順を紹介．
+ヤコビアン行列
+\begin{equation*}
+  A = \left.\frac{\partial f}{\partial x}\right|_{x=0}
+\end{equation*}
+を計算し，その固有値を調べる．
+さらに，
+すべての$i$について$\text{Re}\lambda_i < 0$のとき，
+原点の近傍で局所的に働く系のリアプノフ関数を
+見つけることができる．
+このリアプノフ関数は二次形式 $V ( x ) = x^\top Px$ 
+であり， $P$ は任意の正定値対称行列 $Q$ に対する
+リアプノフ方程式 ( 4.12 ) の解である．
+
+※$\text{Re}\lambda_i \leq 0\;,\;\forall i\; \text{with}\; \text{Re}\lambda_i = 0\;,\;\exists i$ 
+の場合，線形化による平衡点の安定性解析はできない．
+
+{\color{gray}\hrulefill}
+
+虚軸上に固有値がある時の例
+
+Example 4.14
+\begin{equation*}
+  \dot x = ax^3
+\end{equation*}
+原点$x=0$について線形化
+\begin{equation*}
+  A = \left.\frac{\partial f}{\partial x}\right|_{x=0} = \left.3ax^2\right|_{x=0} = 0
+\end{equation*}
+虚軸上の固有値が一つある．線形化では原点の安定性解析ができない．\\
+このシステムの安定性は$a$の値による．
+\begin{itemize}
+  \item $a<0$の場合，リアプノフ関数$V(x)=x^4\;,\;\dot V(x)=4ax^6$より，漸近安定．
+  \item $a=0$の場合，$\dot x = 0$より、原点は安定．
+  \item $a>0$の場合，不安定．
+\end{itemize}
+
+{\color{gray}\hrulefill}
+
+Example 4.15(振り子方程式)
+\begin{align*}
+  \dot x_1 =& x_2\\
+  \dot x_2 =& -a \sin x_1 -b x_2\\
+\end{align*}
+この方程式は2つの平衡点$(x_1,x_2)=(0,0)=(\pi,0)$を持つ．
+線形化を用いて安定性解析を行う．以下がヤコビアン行列．
+\begin{equation*}
+  \frac{\partial f}{\partial x} = \left[
+    \begin{matrix}
+      \frac{\partial f_1}{\partial x_1}&\frac{\partial f_1}{\partial x_2}\\
+      \frac{\partial f_2}{\partial x_1}&\frac{\partial f_2}{\partial x_2}\\
+    \end{matrix}
+  \right]
+\end{equation*}
+平衡点$(x_1,x_2)=(0,0)$の安定性を考える．
+\begin{equation*}
+  A = \left.\frac{\partial f}{\partial x} \right|_{x=0} = \left[
+    \begin{matrix}
+      0&1\\ -a&-b
+    \end{matrix}
+  \right]
+\end{equation*}
+$A$の固有値は
+\begin{equation*}
+  \lambda_{1,2} = -\frac{1}{2}b \pm \frac{1}{2}\sqrt{b^2-4a}
+\end{equation*}
+全ての$a,b>0$について固有値は$\text{Re}\lambda_i<0$を満たす．
+つまり，原点の平衡点は漸近安定である．\\
+摩擦がない($b=0$)場合，固有値は虚軸上にあるため，線形化による安定解析はできない．
+例4.3より，安定な平衡点である．
+
+平衡点$(x_1,x_2)=(\pi,0)$の安定性を考える．
+ここで，$z_1=x_1-\pi\;,\;z_2=x_2$と変数変換を行い，
+原点$(z=0)$の平衡点を考えることと同義．
+\begin{equation*}
+  \tilde{A} = \left.\frac{\partial f}{\partial x} \right|_{x_1=\pi,x_2=0} = \left[
+    \begin{matrix}
+      0&1\\ a&-b
+    \end{matrix}
+  \right]
+\end{equation*}
+$\tilde{A}$の固有値は
+\begin{equation*}
+  \lambda_{1,2} = -\frac{1}{2}b \pm \frac{1}{2}\sqrt{b^2+4a}
+\end{equation*}
+全ての$a>0,b\geq0$について，$\text{Re}{\lambda_1}>0$．つまり，平衡点は不安定である．
+\end{document}
